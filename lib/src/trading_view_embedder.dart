@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:trading_view_flutter/src/model/theme.dart';
 import 'package:trading_view_flutter/src/model/trading_view_data.dart';
@@ -27,6 +28,14 @@ class TradingViewEmbedder {
   }) async {
     assert(tradingViewData.toJson().isNotEmpty, 'TradingViewData 不可为空');
 
+    final tradingViewWCode = TradingViewJsInteropt.getTradingViewWCode(
+      json: tradingViewData.toJson(),
+    );
+
+    if (kDebugMode) {
+      debugPrint('TradingViewWCode: $tradingViewWCode');
+    }
+
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(
@@ -46,9 +55,7 @@ class TradingViewEmbedder {
       ..loadRequest(
         Uri.parse(
           Uri.dataFromString(
-            TradingViewJsInteropt.getTradingViewWCode(
-              json: tradingViewData.toJson(),
-            ),
+            tradingViewWCode,
             mimeType: 'text/html',
             encoding: Encoding.getByName('utf-8'),
           ).toString(),

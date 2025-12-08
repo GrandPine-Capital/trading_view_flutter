@@ -10,8 +10,8 @@ class TradingViewWidget extends StatefulWidget {
 
   const TradingViewWidget({
     super.key,
-    this.width = 500,
-    this.height = 100,
+    this.width = 1200,
+    this.height = 600,
     required this.data,
   });
 
