@@ -19,6 +19,8 @@ class TradingViewData {
   final String? supportHost;
   final bool? isLightWeightChart;
 
+  // TODO add indicator
+
   TradingViewData({
     required this.id,
     required this.symbol,

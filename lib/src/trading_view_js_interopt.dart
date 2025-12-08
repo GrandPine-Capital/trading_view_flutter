@@ -7,6 +7,7 @@ class TradingViewJsInteropt {
   static String getTradingViewWCode({
     required Map<String, Object> json,
     bool? isLightWeightChart = false,
+    bool? isCandleStick = true,
     String? footer = '',
   }) {
     final logger = Logger();
@@ -18,6 +19,12 @@ class TradingViewJsInteropt {
     final jsonString = jsonEncode(json);
 
     if (isLightWeightChart!) {
+      if (isCandleStick!) {
+        return '''
+
+        ''';
+      }
+
       return '''
 
       ''';
