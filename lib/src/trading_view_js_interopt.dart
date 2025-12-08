@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
+import 'package:trading_view_flutter/src/model/chart_type.dart';
+import 'package:trading_view_flutter/trading_view_flutter.dart';
 
 class TradingViewJsInteropt {
   static String getTradingViewWCode({
-    required Map<String, Object> json,
-    bool? isLightWeightChart = false,
-    bool? isCandleStick = true,
+    required TradingViewData tradingViewData,
     String? footer = '',
   }) {
     final logger = Logger();
@@ -18,10 +18,18 @@ class TradingViewJsInteropt {
 
     final jsonString = jsonEncode(json);
 
-    if (isLightWeightChart!) {
-      if (isCandleStick!) {
+    if (tradingViewData.isLightWeightChart!) {
+      if (tradingViewData.tradingViewChartType ==
+          TradingViewChartType.candlestick) {
         return '''
+        <div>
+          <script type="text/javascript" src="${Constant.tradingLightChartWidgetUrl}" async>
+            const chart = LightweightCharts.createChart(document.body);
+            const lineSeries = chart.addSeries(LightweightCharts.LineSeries);
 
+
+          </script>
+        </div>
         ''';
       }
 

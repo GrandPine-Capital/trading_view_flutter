@@ -1,3 +1,4 @@
+import 'package:trading_view_flutter/src/model/chart_type.dart';
 import 'package:trading_view_flutter/src/model/chart_version.dart';
 import 'package:trading_view_flutter/src/model/constant.dart';
 import 'package:trading_view_flutter/src/model/interval.dart';
@@ -20,6 +21,7 @@ class TradingViewData {
   final String? supportHost;
   final bool? isLightWeightChart;
   final ChartVersion? chartVersion;
+  final TradingViewChartType? tradingViewChartType;
 
   // TODO add indicator
 
@@ -40,6 +42,7 @@ class TradingViewData {
     this.supportHost = Constant.tradingViewUrl,
     this.isLightWeightChart = false,
     this.chartVersion = ChartVersion.china,
+    this.tradingViewChartType = TradingViewChartType.candlestick,
   }) : assert(symbol.isNotEmpty, 'symbol 不能为空');
 
   factory TradingViewData.fromJson(Map<String, dynamic> json) {

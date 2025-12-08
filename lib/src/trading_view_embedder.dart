@@ -29,8 +29,7 @@ class TradingViewEmbedder {
     assert(tradingViewData.toJson().isNotEmpty, 'TradingViewData 不可为空');
 
     final tradingViewWCode = TradingViewJsInteropt.getTradingViewWCode(
-      json: tradingViewData.toJson(),
-      isLightWeightChart: tradingViewData.isLightWeightChart,
+      tradingViewData: tradingViewData,
     );
 
     if (kDebugMode) {
