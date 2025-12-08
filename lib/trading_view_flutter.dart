@@ -1,0 +1,1 @@
+library trading_view_flutter;

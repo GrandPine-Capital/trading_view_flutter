@@ -1,0 +1,1 @@
+enum TradingViewTheme { light, dark }
