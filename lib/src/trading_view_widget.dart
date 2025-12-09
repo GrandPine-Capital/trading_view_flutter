@@ -3,6 +3,8 @@ import 'package:trading_view_flutter/src/model/trading_view_data.dart';
 import 'package:trading_view_flutter/src/trading_view_embedder.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import 'model/theme.dart';
+
 class TradingViewWidget extends StatefulWidget {
   final double width;
   final double height;
@@ -32,6 +34,9 @@ class _TradingViewWidgetState extends State<TradingViewWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: widget.data.theme == TradingViewTheme.dark
+          ? Colors.black
+          : Colors.white,
       body: SizedBox(
         height: widget.height,
         width: widget.width,

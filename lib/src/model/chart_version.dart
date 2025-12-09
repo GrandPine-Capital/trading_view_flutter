@@ -1,1 +1,0 @@
-enum ChartVersion { global, china }

@@ -1,0 +1,1 @@
+enum ChartRegion { global, china }

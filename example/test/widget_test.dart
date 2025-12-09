@@ -1,7 +1,8 @@
-import 'package:example/ui/trading_view_example.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trading_view_flutter/trading_view_flutter.dart';
+
+import '../lib/main.dart' show TradingViewExample;
 
 void main() {
   group('TradingViewExample 部件测试', () {
@@ -48,7 +49,7 @@ void main() {
       expect(tradingViewWidget.data.id, 0);
       expect(tradingViewWidget.data.symbol, 'SZSE:002594');
       expect(tradingViewWidget.data.autosize, true);
-      expect(tradingViewWidget.data.interval, TradingViewInterval.M);
+      expect(tradingViewWidget.data.interval, TradingViewInterval.month);
       expect(tradingViewWidget.data.timezone, 'Asia/Shanghai');
       expect(tradingViewWidget.data.theme, TradingViewTheme.light);
       expect(tradingViewWidget.data.style, '1');

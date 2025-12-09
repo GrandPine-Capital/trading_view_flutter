@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
-import 'package:trading_view_flutter/src/model/chart_type.dart';
 import 'package:trading_view_flutter/trading_view_flutter.dart';
 
 class TradingViewJsInteropt {
@@ -13,10 +12,10 @@ class TradingViewJsInteropt {
     final logger = Logger();
 
     if (kDebugMode) {
-      logger.d('TradingViewWCode: $json');
+      logger.d('TradingViewWCode: ${tradingViewData.toString()}');
     }
 
-    final jsonString = jsonEncode(json);
+    final jsonString = jsonEncode(tradingViewData.toJson());
 
     if (tradingViewData.isLightWeightChart!) {
       if (tradingViewData.tradingViewChartType ==
@@ -38,8 +37,8 @@ class TradingViewJsInteropt {
       ''';
     } else {
       return '''
-      <div class="tradingview-widget-container" style="height:100%;width:100%">
-        <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+      <div>
+        <div class="tradingview-widget-container__widget" ></div>
         <div class="tradingview-widget-copyright">
           <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
             <span class="blue-text">$footer</span>
