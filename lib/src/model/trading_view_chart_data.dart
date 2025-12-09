@@ -1,3 +1,5 @@
+import 'package:trading_view_flutter/src/extensions/date_fromatter.dart';
+
 /// K线数据模型
 ///
 /// 本模型遵循金融市场数据标准，用于表示标准化K线数据。
@@ -14,7 +16,7 @@ class TradingViewChartData {
   final double high;
   final double low;
   final double close;
-  final String time;
+  final DateTime time;
 
   TradingViewChartData({
     required this.open,
@@ -30,7 +32,7 @@ class TradingViewChartData {
       high: json['high'],
       low: json['low'],
       close: json['close'],
-      time: json['time'],
+      time: json['time'].toYYYYMMDD,
     );
   }
 
@@ -40,12 +42,12 @@ class TradingViewChartData {
       'high': high,
       'low': low,
       'close': close,
-      'time': time,
+      'time': time.toYYYYMMDD,
     };
   }
 
   @override
   String toString() {
-    return 'TradingViewChartData{open: $open, high: $high, low: $low, close: $close, time: $time}';
+    return 'TradingViewChartData{open: $open, high: $high, low: $low, close: $close, time: ${time.toYYYYMMDD}}';
   }
 }

@@ -3,5 +3,5 @@ class Constant {
   static const String tradingDefaultViewWidgetUrl =
       "https://s3.tradingview.com/external-embedding/embed-widget-symbol-profile.js";
   static const String tradingLightChartWidgetUrl =
-      "https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js";
+      "https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js";
 }

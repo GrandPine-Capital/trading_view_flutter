@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:trading_view_flutter/src/model/chart_type.dart';
 import 'package:trading_view_flutter/src/model/chart_region.dart';
-import 'package:trading_view_flutter/src/model/constant.dart';
+import 'package:trading_view_flutter/src/config/constant.dart';
 import 'package:trading_view_flutter/src/model/interval.dart';
 import 'package:trading_view_flutter/src/model/theme.dart';
 import 'package:trading_view_flutter/src/model/trading_view_chart_data.dart';
@@ -90,7 +92,14 @@ class TradingViewData {
       hideVolume: json['hide_volume'],
       supportHost: json['support_host'],
       isLightWeightChart: json['isLightWeightChart'],
-      chartValue: (json['chartValue']),
+      chartValue: json['chartValue'] != null
+          ? (json['chartValue'] as List<dynamic>).map((item) {
+              final Map<String, dynamic> decodedMap = jsonDecode(
+                item as String,
+              );
+              return TradingViewChartData.fromJson(decodedMap);
+            }).toList()
+          : null,
       chartRegion: json['chartRegion'],
       showDrawingToolBar: json['showDrawingToolBar'],
     );
@@ -104,7 +113,7 @@ class TradingViewData {
       'symbol': symbol,
       'autosize': autosize,
       'interval': interval ?? TradingViewInterval.day,
-      'timezone': timezone ?? 'Etc/UTC',
+      'timezone': timezone ?? 'Asia/Shanghai',
       'theme': theme?.name ?? TradingViewTheme.light.name,
       'style': style ?? '1',
       'locale': locale ?? 'zh',

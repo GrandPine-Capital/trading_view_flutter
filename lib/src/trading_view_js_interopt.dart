@@ -18,22 +18,68 @@ class TradingViewJsInteropt {
     final jsonString = jsonEncode(tradingViewData.toJson());
 
     if (tradingViewData.isLightWeightChart!) {
+      final chartDataJson = jsonEncode(
+        tradingViewData.chartValue?.map((item) => item.toJson()).toList() ?? [],
+      );
+
+      if (kDebugMode) logger.d('chartValue: $chartDataJson');
+
       if (tradingViewData.tradingViewChartType ==
           TradingViewChartType.candlestick) {
         return '''
-        <div>
-          <script type="text/javascript" src="${Constant.tradingLightChartWidgetUrl}" async>
-            const chart = LightweightCharts.createChart(document.body);
-            const lineSeries = chart.addSeries(LightweightCharts.LineSeries);
+          <div>
+            <div id="symbol" style="font-size:16px; font-weight:bold; margin-bottom:4px;">
+              ${tradingViewData.symbol}
+            </div>
 
-            lineSeries.setData(${tradingViewData.chartValue};
-          </script>
-        </div>
-        ''';
+            <div id="container" style="width:100%; height:400px;"></div>
+
+            <script>
+              (function() {
+                var script = document.createElement('script');
+
+                script.src = '${Constant.tradingLightChartWidgetUrl}';
+                script.onload = function() {
+                  var checkReady = setInterval(function() {
+
+                    if (window.LightweightCharts) {
+                      clearInterval(checkReady);
+
+                      const chartOptions = {
+                        layout: {
+                          textColor: '${(tradingViewData.theme == TradingViewTheme.light ? 'black' : 'white')}',
+                          background: { type: 'solid', color: ' ${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'}' }
+                        }
+                      };
+
+                      const chart = LightweightCharts.createChart(
+                        document.getElementById('container'),
+                        chartOptions
+                      );
+
+                      const candlestickSeries = chart.addCandlestickSeries({
+                        upColor: '#26a69a',
+                        downColor: '#ef5350',
+                        borderVisible: false,
+                        wickUpColor: '#26a69a',
+                        wickDownColor: '#ef5350'
+                      });
+
+                      candlestickSeries.setData($chartDataJson);
+
+                      chart.timeScale().fitContent();
+                    }
+                  }, 50);
+                };
+                document.head.appendChild(script);
+              })();
+            </script>
+          </div>
+          ''';
       }
 
       return '''
-
+          <p>unknown</p>
       ''';
     } else {
       return '''
