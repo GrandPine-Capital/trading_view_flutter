@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the TradingViewData class from the trading_view_flutter library, for the Dart programming language.">
+  <title>TradingViewData class - trading_view_flutter library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">trading_view_flutter</a></li>
+    <li><a href="../trading_view_flutter/">trading_view_flutter.dart</a></li>
+    <li class="self-crumb">TradingViewData class</li>
+  </ol>
+  <div class="self-name">TradingViewData</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="trading_view_flutter&#47;trading_view_flutter-library-sidebar.html"
+    data-below-sidebar="trading_view_flutter&#47;TradingViewData-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">TradingViewData</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p><a href="../trading_view_flutter/TradingViewData-class.html">TradingViewData</a>
+ TradingView 数据模型</p>
+<p>K线数据模型
+本模型遵循金融市场数据标准，用于表示标准化K线数据。</p>
+<p><a href="../trading_view_flutter/TradingViewData/symbol.html">symbol</a> The symbol of the stocke ticker
+<a href="../trading_view_flutter/TradingViewData/autosize.html">autosize</a> if tureue the trading view will auto resize the view to fit the parent container
+ <a href="../trading_view_flutter/TradingViewData/interval.html">interval</a> The interval of the chart refer <a href="../trading_view_flutter/TradingViewInterval-class.html">TradingViewInterval</a></p>
+<p><a href="../trading_view_flutter/TradingViewData/timezone.html">timezone</a> The timezone of the chart （IANA 时区标识符） format default "Asia/Shanghai"
+<a href="../trading_view_flutter/TradingViewData/theme.html">theme</a> The theme of the chart refer <a href="../trading_view_flutter/TradingViewTheme.html">TradingViewTheme</a>1</p>
+</section>
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="TradingViewData.new" class="callable">
+          <span class="name"><a href="../trading_view_flutter/TradingViewData/TradingViewData.html">TradingViewData.new</a></span><span class="signature">({<span class="parameter" id="-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">id</span>, </span><span class="parameter" id="-param-symbol"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">symbol</span>, </span><span class="parameter" id="-param-autosize"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autosize</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-interval"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">interval</span> = <span class="default-value">TradingViewInterval.day</span>, </span><span class="parameter" id="-param-timezone"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">timezone</span> = <span class="default-value">&#39;Asia&#47;Shanghai&#39;</span>, </span><span class="parameter" id="-param-theme"><span class="type-annotation"><a href="../trading_view_flutter/TradingViewTheme.html">TradingViewTheme</a>?</span> <span class="parameter-name">theme</span> = <span class="default-value">TradingViewTheme.light</span>, </span><span class="parameter" id="-param-style"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">style</span> = <span class="default-value">&#39;1&#39;</span>, </span><span class="parameter" id="-param-locale"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">locale</span> = <span class="default-value">&#39;zh&#39;</span>, </span><span class="parameter" id="-param-hideTopToolbar"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">hideTopToolbar</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-allowSymbolChange"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">allowSymbolChange</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-saveImage"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">saveImage</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-showCalendar"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">showCalendar</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-hideVolume"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">hideVolume</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-showDrawingToolBar"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">showDrawingToolBar</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-showComprehennsiveDetails"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">showComprehennsiveDetails</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-supportHost"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">supportHost</span> = <span class="default-value">Constant.tradingViewUrl</span>, </span><span class="parameter" id="-param-isLightWeightChart"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">isLightWeightChart</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-chartRegion"><span class="type-annotation">ChartRegion?</span> <span class="parameter-name">chartRegion</span> = <span class="default-value">ChartRegion.china</span>, </span><span class="parameter" id="-param-tradingViewChartType"><span class="type-annotation"><a href="../trading_view_flutter/TradingViewChartType.html">TradingViewChartType</a>?</span> <span class="parameter-name">tradingViewChartType</span> = <span class="default-value">TradingViewChartType.candlestick</span>, </span><span class="parameter" id="-param-chartValue"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../trading_view_flutter/TradingViewChartData-class.html">TradingViewChartData</a></span>&gt;</span>?</span> <span class="parameter-name">chartValue</span></span>})</span>
+        </dt>
+        <dd>
+          
+        </dd>
+        <dt id="TradingViewData.fromJson" class="callable">
+          <span class="name"><a href="../trading_view_flutter/TradingViewData/TradingViewData.fromJson.html">TradingViewData.fromJson</a></span><span class="signature">(<span class="parameter" id="fromJson-param-json"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">json</span></span>)</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="allowSymbolChange" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/allowSymbolChange.html">allowSymbolChange</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="autosize" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/autosize.html">autosize</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="chartRegion" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/chartRegion.html">chartRegion</a></span>
+  <span class="signature">&#8594; ChartRegion?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="chartValue" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/chartValue.html">chartValue</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../trading_view_flutter/TradingViewChartData-class.html">TradingViewChartData</a></span>&gt;</span>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="hideTopToolbar" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/hideTopToolbar.html">hideTopToolbar</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="hideVolume" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/hideVolume.html">hideVolume</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="id" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/id.html">id</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="interval" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/interval.html">interval</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="isLightWeightChart" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/isLightWeightChart.html">isLightWeightChart</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="locale" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/locale.html">locale</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="saveImage" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/saveImage.html">saveImage</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="showCalendar" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/showCalendar.html">showCalendar</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="showComprehennsiveDetails" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/showComprehennsiveDetails.html">showComprehennsiveDetails</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="showDrawingToolBar" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/showDrawingToolBar.html">showDrawingToolBar</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="style" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/style.html">style</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="supportHost" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/supportHost.html">supportHost</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="symbol" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/symbol.html">symbol</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="theme" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/theme.html">theme</a></span>
+  <span class="signature">&#8594; <a href="../trading_view_flutter/TradingViewTheme.html">TradingViewTheme</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="timezone" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/timezone.html">timezone</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="tradingViewChartType" class="property">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/tradingViewChartType.html">tradingViewChartType</a></span>
+  <span class="signature">&#8594; <a href="../trading_view_flutter/TradingViewChartType.html">TradingViewChartType</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toJson" class="callable">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/toJson.html">toJson</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="toString" class="callable">
+  <span class="name"><a href="../trading_view_flutter/TradingViewData/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  A string representation of this object.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">trading_view_flutter</a></li>
+    <li><a href="../trading_view_flutter/">trading_view_flutter</a></li>
+    <li class="self-crumb">TradingViewData class</li>
+</ol>
+
+    <h5>trading_view_flutter library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    trading_view_flutter
+      0.0.3
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
