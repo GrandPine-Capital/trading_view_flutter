@@ -13,13 +13,27 @@ import 'package:trading_view_flutter/src/model/trading_view_chart_data.dart';
 ///  K线数据模型
 ///   本模型遵循金融市场数据标准，用于表示标准化K线数据。
 ///
-/// [symbol] The symbol of the stocke ticker
-/// [autosize] if tureue the trading view will auto resize the view to fit the parent container
-///  [interval] The interval of the chart refer [TradingViewInterval]
-///
-///  [timezone] The timezone of the chart （IANA 时区标识符） format default "Asia/Shanghai"
-/// [theme] The theme of the chart refer [TradingViewTheme]1
-///
+/// [id] 图表数据ID
+/// [symbol] 股票代码符号
+/// [autosize] 如果为true，TradingView将自动调整视图以适应父容器
+/// [interval] 图表时间间隔，参考[TradingViewInterval]
+/// [timezone] 图表时区（IANA时区标识符），默认"Asia/Shanghai"
+/// [theme] 图表主题，参考[TradingViewTheme]
+/// [style] 图表样式（例如："1"表示蜡烛图，"2"表示线图等）
+/// [locale] 图表语言区域（例如："zh_CN"表示中文）ISO 639
+/// [hideTopToolbar] 如果为true，隐藏顶部工具栏
+/// [allowSymbolChange] 如果为true，允许更改股票代码
+/// [saveImage] 如果为true，启用保存图片功能
+/// [showCalendar] 如果为true，显示经济日历
+/// [hideVolume] 如果为true，隐藏成交量指标
+/// [showDrawingToolBar] 如果为true，显示绘图工具栏
+/// [showComprehennsiveDetails] 如果为true，显示综合详细信息
+/// [supportHost] 图表支持的主机URL
+/// [isLightWeightChart] 如果为true，使用轻量级图表版本
+/// [chartRegion] 图表区域（例如："CN"表示中国），参考[ChartRegion]
+/// [tradingViewChartType] 图表类型（例如："advanced"高级版，"basic"基础版），参考[TradingViewChartType]
+/// [chartValue] 图表数据点列表，参考[TradingViewChartData]
+
 class TradingViewData {
   final int? id;
   final String symbol;
