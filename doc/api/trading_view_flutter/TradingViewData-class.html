@@ -58,11 +58,26 @@
  TradingView 数据模型</p>
 <p>K线数据模型
 本模型遵循金融市场数据标准，用于表示标准化K线数据。</p>
-<p><a href="../trading_view_flutter/TradingViewData/symbol.html">symbol</a> The symbol of the stocke ticker
-<a href="../trading_view_flutter/TradingViewData/autosize.html">autosize</a> if tureue the trading view will auto resize the view to fit the parent container
- <a href="../trading_view_flutter/TradingViewData/interval.html">interval</a> The interval of the chart refer <a href="../trading_view_flutter/TradingViewInterval-class.html">TradingViewInterval</a></p>
-<p><a href="../trading_view_flutter/TradingViewData/timezone.html">timezone</a> The timezone of the chart （IANA 时区标识符） format default "Asia/Shanghai"
-<a href="../trading_view_flutter/TradingViewData/theme.html">theme</a> The theme of the chart refer <a href="../trading_view_flutter/TradingViewTheme.html">TradingViewTheme</a>1</p>
+<p><a href="../trading_view_flutter/TradingViewData/id.html">id</a> 图表数据ID
+<a href="../trading_view_flutter/TradingViewData/symbol.html">symbol</a> 股票代码符号
+<a href="../trading_view_flutter/TradingViewData/autosize.html">autosize</a> 如果为true，TradingView将自动调整视图以适应父容器
+<a href="../trading_view_flutter/TradingViewData/interval.html">interval</a> 图表时间间隔，参考<a href="../trading_view_flutter/TradingViewInterval-class.html">TradingViewInterval</a>
+<a href="../trading_view_flutter/TradingViewData/timezone.html">timezone</a> 图表时区（IANA时区标识符），默认"Asia/Shanghai"
+<a href="../trading_view_flutter/TradingViewData/theme.html">theme</a> 图表主题，参考<a href="../trading_view_flutter/TradingViewTheme.html">TradingViewTheme</a>
+<a href="../trading_view_flutter/TradingViewData/style.html">style</a> 图表样式（例如："1"表示蜡烛图，"2"表示线图等）
+<a href="../trading_view_flutter/TradingViewData/locale.html">locale</a> 图表语言区域（例如："zh_CN"表示中文）ISO 639
+<a href="../trading_view_flutter/TradingViewData/hideTopToolbar.html">hideTopToolbar</a> 如果为true，隐藏顶部工具栏
+<a href="../trading_view_flutter/TradingViewData/allowSymbolChange.html">allowSymbolChange</a> 如果为true，允许更改股票代码
+<a href="../trading_view_flutter/TradingViewData/saveImage.html">saveImage</a> 如果为true，启用保存图片功能
+<a href="../trading_view_flutter/TradingViewData/showCalendar.html">showCalendar</a> 如果为true，显示经济日历
+<a href="../trading_view_flutter/TradingViewData/hideVolume.html">hideVolume</a> 如果为true，隐藏成交量指标
+<a href="../trading_view_flutter/TradingViewData/showDrawingToolBar.html">showDrawingToolBar</a> 如果为true，显示绘图工具栏
+<a href="../trading_view_flutter/TradingViewData/showComprehennsiveDetails.html">showComprehennsiveDetails</a> 如果为true，显示综合详细信息
+<a href="../trading_view_flutter/TradingViewData/supportHost.html">supportHost</a> 图表支持的主机URL
+<a href="../trading_view_flutter/TradingViewData/isLightWeightChart.html">isLightWeightChart</a> 如果为true，使用轻量级图表版本
+<a href="../trading_view_flutter/TradingViewData/chartRegion.html">chartRegion</a> 图表区域（例如："CN"表示中国），参考<code>ChartRegion</code>
+<a href="../trading_view_flutter/TradingViewData/tradingViewChartType.html">tradingViewChartType</a> 图表类型（例如："advanced"高级版，"basic"基础版），参考<a href="../trading_view_flutter/TradingViewChartType.html">TradingViewChartType</a>
+<a href="../trading_view_flutter/TradingViewData/chartValue.html">chartValue</a> 图表数据点列表，参考<a href="../trading_view_flutter/TradingViewChartData-class.html">TradingViewChartData</a></p>
 </section>
 
 
@@ -454,7 +469,7 @@
 <footer>
   <span class="no-break">
     trading_view_flutter
-      0.0.3
+      0.0.6
   </span>
   
 </footer>
