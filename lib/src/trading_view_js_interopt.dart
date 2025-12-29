@@ -27,7 +27,7 @@ class TradingViewJsInteropt {
 
       if (tradingViewData.tradingViewChartType == TradingViewChartType.bar) {
         return '''
-          <p> $tradingViewData </p>
+          <p style="max-height: 200px; overflow: auto;"> $jsonString </p>
       ''';
       } else if (tradingViewData.tradingViewChartType ==
           TradingViewChartType.candlestick) {
