@@ -25,7 +25,11 @@ class TradingViewJsInteropt {
 
       if (kDebugMode) logger.d('chartValue: $chartDataJson');
 
-      if (tradingViewData.tradingViewChartType ==
+      if (tradingViewData.tradingViewChartType == TradingViewChartType.bar) {
+        return '''
+          <p> $tradingViewData </p>
+      ''';
+      } else if (tradingViewData.tradingViewChartType ==
           TradingViewChartType.candlestick) {
         return '''
           <div

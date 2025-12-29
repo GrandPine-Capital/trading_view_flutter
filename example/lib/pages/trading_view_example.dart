@@ -231,6 +231,25 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       chartValue: fakeChartData,
     );
 
+    final tradingDataBar = TradingViewData(
+      id: 0,
+      symbol: 'SZSE:002594',
+      autosize: true,
+      interval: TradingViewInterval.month,
+      timezone: 'Asia/Shanghai',
+      theme: theme,
+      style: '1',
+      locale: 'zh',
+      hideTopToolbar: true,
+      allowSymbolChange: false,
+      saveImage: false,
+      showCalendar: true,
+      hideVolume: false,
+      isLightWeightChart: true,
+      tradingViewChartType: TradingViewChartType.bar,
+      chartValue: fakeChartData,
+    );
+
     return Scaffold(
       backgroundColor: theme == TradingViewTheme.light
           ? Colors.white
@@ -254,10 +273,10 @@ class _TradingViewExampleState extends State<TradingViewExample> {
           ),
         ],
       ),
-      body: Column(
+      body: ListView(
         children: [
           Text(
-            'Default TradingView | 默认TradingView',
+            '默认TradingView图',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -276,9 +295,10 @@ class _TradingViewExampleState extends State<TradingViewExample> {
               ),
             ),
           ),
+
           SizedBox(height: 30),
           Text(
-            'LightWeight Chart TradingView | 轻量级图表TradingView',
+            'Lightweight级蜡烛图',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -292,6 +312,27 @@ class _TradingViewExampleState extends State<TradingViewExample> {
               child: TradingViewWidget(
                 key: ValueKey('trading_view_light_${theme.name}'),
                 data: tradingDataLight,
+                width: 600,
+                height: 300,
+              ),
+            ),
+          ),
+          SizedBox(height: 30),
+          Text(
+            'Lightweight柱状图',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 300,
+              child: TradingViewWidget(
+                key: ValueKey('trading_view_light_${theme.name}'),
+                data: tradingDataBar,
                 width: 600,
                 height: 300,
               ),
