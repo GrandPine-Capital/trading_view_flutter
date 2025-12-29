@@ -9,5 +9,7 @@ export 'src/config/constant.dart';
 export 'src/model/trading_view_data.dart';
 export 'src/model/trading_view_chart_data.dart';
 export 'src/model/interval.dart';
+export 'src/extensions/date_fromatter.dart';
+export 'src/extensions/trading_view_theme.dart';
 
 /// @docImport ‘src/model/trading_view_chart_data.dart’

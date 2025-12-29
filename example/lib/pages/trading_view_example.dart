@@ -9,11 +9,103 @@ class TradingViewExample extends StatefulWidget {
 }
 
 class _TradingViewExampleState extends State<TradingViewExample> {
-  TradingViewTheme? _theme = TradingViewTheme.light;
+  final ValueNotifier<TradingViewTheme> _themeNotifier = ValueNotifier(
+    TradingViewTheme.light,
+  );
+
+  @override
+  void dispose() {
+    _themeNotifier.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final fakeChartData = <TradingViewChartData>[
+      TradingViewChartData(
+        time: DateTime(2025, 12, 10),
+        open: 40.50,
+        high: 45.20,
+        low: 38.10,
+        close: 42.80,
+      ),
+      TradingViewChartData(
+        time: DateTime(2025, 12, 11),
+        open: 43.00,
+        high: 47.50,
+        low: 41.80,
+        close: 46.20,
+      ),
+      TradingViewChartData(
+        time: DateTime(2025, 12, 12),
+        open: 46.50,
+        high: 50.30,
+        low: 44.90,
+        close: 49.10,
+      ),
+      TradingViewChartData(
+        time: DateTime(2025, 12, 13),
+        open: 49.50,
+        high: 53.80,
+        low: 48.20,
+        close: 52.40,
+      ),
+      TradingViewChartData(
+        time: DateTime(2025, 12, 14),
+        open: 52.80,
+        high: 57.20,
+        low: 51.50,
+        close: 56.00,
+      ),
+      TradingViewChartData(
+        time: DateTime(2025, 12, 15),
+        open: 56.40,
+        high: 60.90,
+        low: 55.20,
+        close: 59.80,
+      ),
+      TradingViewChartData(
+        time: DateTime(2025, 12, 16),
+        open: 60.20,
+        high: 64.70,
+        low: 59.00,
+        close: 63.50,
+      ),
+      TradingViewChartData(
+        time: DateTime(2025, 12, 17),
+        open: 63.90,
+        high: 68.40,
+        low: 62.80,
+        close: 67.20,
+      ),
+      TradingViewChartData(
+        time: DateTime(2025, 12, 18),
+        open: 67.60,
+        high: 72.10,
+        low: 66.40,
+        close: 70.90,
+      ),
+      TradingViewChartData(
+        time: DateTime(2025, 12, 19),
+        open: 71.30,
+        high: 75.80,
+        low: 70.10,
+        close: 74.60,
+      ),
+      TradingViewChartData(
+        time: DateTime(2025, 12, 20),
+        open: 74.90,
+        high: 79.40,
+        low: 73.70,
+        close: 78.20,
+      ),
+      TradingViewChartData(
+        time: DateTime(2025, 12, 21),
+        open: 78.50,
+        high: 83.00,
+        low: 77.30,
+        close: 81.80,
+      ),
       TradingViewChartData(
         time: DateTime(2025, 12, 22),
         open: 75.16,
@@ -86,13 +178,29 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       ),
     ];
 
+    return MaterialApp(
+      home: Scaffold(
+        body: ValueListenableBuilder<TradingViewTheme>(
+          valueListenable: _themeNotifier,
+          builder: (context, theme, child) {
+            return _buildContent(theme, fakeChartData);
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContent(
+    TradingViewTheme theme,
+    List<TradingViewChartData> fakeChartData,
+  ) {
     final tradingData = TradingViewData(
       id: 0,
       symbol: 'SZSE:002594',
       autosize: true,
       interval: TradingViewInterval.month,
       timezone: 'Asia/Shanghai',
-      theme: _theme,
+      theme: theme,
       style: '1',
       locale: TradingLocale.chinese.toLocaleString(),
       hideTopToolbar: true,
@@ -110,7 +218,7 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       autosize: true,
       interval: TradingViewInterval.month,
       timezone: 'Asia/Shanghai',
-      theme: _theme, // 使用状态变量
+      theme: theme,
       style: '1',
       locale: 'zh',
       hideTopToolbar: true,
@@ -123,62 +231,73 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       chartValue: fakeChartData,
     );
 
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: const Text('TradingView 示例'),
-          backgroundColor: Colors.white,
-          actions: [
-            Switch(
-              value: _theme == TradingViewTheme.dark, // 使用状态变量
-              onChanged: (value) {
-                setState(() {
-                  _theme = value
-                      ? TradingViewTheme.dark
-                      : TradingViewTheme.light; // 更新状态变量
-                });
-              },
-            ),
-          ],
+    return Scaffold(
+      backgroundColor: theme == TradingViewTheme.light
+          ? Colors.white
+          : Colors.black,
+      appBar: AppBar(
+        title: const Text(
+          'TradingView 示例',
+          style: TextStyle(color: Colors.grey),
         ),
-        body: Column(
-          children: [
-            Text(
-              'Default TradingView | 默认TradingView',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        backgroundColor: theme == TradingViewTheme.light
+            ? Colors.white
+            : Colors.black,
+        actions: [
+          Switch(
+            value: theme == TradingViewTheme.dark,
+            onChanged: (value) {
+              _themeNotifier.value = value
+                  ? TradingViewTheme.dark
+                  : TradingViewTheme.light;
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Text(
+            'Default TradingView | 默认TradingView',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 300,
+              child: TradingViewWidget(
+                key: ValueKey('trading_view_${theme.name}'),
+                data: tradingData,
+                width: 600,
                 height: 300,
-                child: TradingViewWidget(
-                  data: tradingData,
-                  width: 600,
-                  height: 300,
-                ),
               ),
             ),
-
-            SizedBox(height: 30),
-
-            Text(
-              'LightWeight Chart TradingView | 轻量级图表TradingView',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 30),
+          Text(
+            'LightWeight Chart TradingView | 轻量级图表TradingView',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 300,
+              child: TradingViewWidget(
+                key: ValueKey('trading_view_light_${theme.name}'),
+                data: tradingDataLight,
+                width: 600,
                 height: 300,
-                child: TradingViewWidget(
-                  data: tradingDataLight,
-                  width: 600,
-                  height: 300,
-                ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
