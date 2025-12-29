@@ -281,10 +281,18 @@ class LightChartExample extends StatelessWidget {
 <li>响应式布局适配不同屏幕尺寸</li>
 </ul>
 <h2 id="-api-">📚 API 文档</h2>
-<h3 id="-11">核心数据模型</h3>
+<p>本项目的补充技术文档、设计说明和深入教程均存放在 <a href="https://www.ctkqiang.xin/trading_view_flutter/doc/api/">doc 目录</a> 中。该目录是项目的核心知识库，旨在为开发者提供更全面的背景信息和使用指导。</p>
+<h3 id="-11">主要功能</h3>
+<ul>
+<li><strong>架构设计</strong>：存放系统架构图、模块关系图和核心流程说明。</li>
+<li><strong>详细教程</strong>：包含分步配置指南、高级用法示例和最佳实践。</li>
+<li><strong>API 详解</strong>：对公共 API 的补充说明、参数边界案例和性能考量。</li>
+<li><strong>设计决策</strong>：记录关键功能的技术选型理由和权衡考虑。</li>
+</ul>
+<h3 id="-12">核心数据模型</h3>
 <h4 id="tradingviewdata-">TradingViewData 配置类</h4>
 <p><code>TradingViewData</code> 是配置 TradingView 图表的核心类，包含所有可定制的图表参数。</p>
-<h5 id="-12">构造函数</h5>
+<h5 id="-13">构造函数</h5>
 <pre class="language-dart"><code class="language-dart">TradingViewData({
   this.id,
   required this.symbol,
@@ -308,7 +316,7 @@ class LightChartExample extends StatelessWidget {
   this.chartValue,
 }) : assert(symbol.isNotEmpty, 'symbol 不能为空');
 </code></pre>
-<h5 id="-13">属性说明</h5>
+<h5 id="-14">属性说明</h5>
 <table>
 <thead>
 <tr>
@@ -498,7 +506,7 @@ class LightChartExample extends StatelessWidget {
   static const month = 'M';         // 月线
 }
 </code></pre>
-<h4 id="-14">枚举类型</h4>
+<h4 id="-15">枚举类型</h4>
 <p><strong>TradingViewTheme</strong> - 主题枚举</p>
 <pre class="language-dart"><code class="language-dart">enum TradingViewTheme { light, dark }
 </code></pre>
@@ -554,7 +562,7 @@ extension TradingLocaleExtension on TradingLocale {
   });
 }
 </code></pre>
-<h3 id="-15">工具类和扩展</h3>
+<h3 id="-16">工具类和扩展</h3>
 <h4 id="datetimeformat-">DateTimeFormat 扩展</h4>
 <p>提供日期格式化功能，确保时间数据格式统一。</p>
 <pre class="language-dart"><code class="language-dart">extension DateTimeFormat on DateTime {
@@ -572,7 +580,7 @@ extension TradingLocaleExtension on TradingLocale {
 }
 </code></pre>
 <h2 id="--6">🔧 开发指南</h2>
-<h3 id="-16">本地开发环境搭建</h3>
+<h3 id="-17">本地开发环境搭建</h3>
 <ol>
 <li><strong>克隆项目</strong></li>
 </ol>
@@ -590,21 +598,21 @@ cd trading_view_flutter
 <pre class="language-bash"><code class="language-bash">cd example
 flutter run
 </code></pre>
-<h3 id="-17">测试</h3>
+<h3 id="-18">测试</h3>
 <p>运行完整的测试套件：</p>
 <pre class="language-bash"><code class="language-bash">flutter test
 </code></pre>
 <p>运行特定测试文件：</p>
 <pre class="language-bash"><code class="language-bash">flutter test test/trading_view_widget_test.dart
 </code></pre>
-<h3 id="-18">代码规范</h3>
+<h3 id="-19">代码规范</h3>
 <ul>
 <li>遵循 <a href="https://dart.dev/guides/language/effective-dart/style">Dart 风格指南</a></li>
 <li>使用 <code>flutter analyze</code> 进行代码检查</li>
 <li>所有公开API必须包含完整的文档注释</li>
 <li>使用有意义的变量和函数命名</li>
 </ul>
-<h3 id="-19">贡献流程</h3>
+<h3 id="-20">贡献流程</h3>
 <ol>
 <li>Fork 项目到你的 GitHub 账户</li>
 <li>创建特性分支：<code>git checkout -b feature/amazing-feature</code></li>
@@ -636,7 +644,7 @@ flutter run
 <p><strong>A:</strong> 目前需要通过 TradingView 原生的指标系统添加。未来版本计划提供编程接口来动态添加技术指标。</p>
 <h3 id="q--5">Q: 轻量级图表和标准图表有什么区别？</h3>
 <p><strong>A:</strong> 轻量级图表使用 Lightweight Charts 库，体积更小、渲染更快，但功能相对简化。标准图表使用完整的 TradingView 图表，功能全面但资源占用更多。</p>
-<h3 id="-20">兼容性说明</h3>
+<h3 id="-21">兼容性说明</h3>
 <ul>
 <li>✅ <strong>Flutter</strong>: 1.17.0+ (支持 2.x 和 3.x)</li>
 <li>✅ <strong>iOS</strong>: 11.0+</li>
@@ -644,7 +652,7 @@ flutter run
 <li>✅ <strong>Web</strong>: 需要配置 CORS</li>
 <li>✅ <strong>Desktop</strong>: Windows, macOS, Linux</li>
 </ul>
-<h3 id="-21">性能优化建议</h3>
+<h3 id="-22">性能优化建议</h3>
 <ol>
 <li><strong>避免频繁重建</strong>: 将 <code>TradingViewWidget</code> 放在 <code>StatefulWidget</code> 中，避免不必要的重建</li>
 <li><strong>合理使用 const</strong>: 对不变的配置使用 const 构造函数</li>
@@ -708,7 +716,7 @@ SOFTWARE.
 </div>
 <hr>
 <h3 id="--11">🌐 全球捐赠通道</h3>
-<h4 id="-22">国内用户</h4>
+<h4 id="-23">国内用户</h4>
 <div align="center" style="margin: 40px 0">
 <div align="center">
 <table>
@@ -727,7 +735,7 @@ SOFTWARE.
 </tbody></table>
 </div>
 </div>
-<h4 id="-23">国际用户</h4>
+<h4 id="-24">国际用户</h4>
 <div align="center" style="margin: 40px 0">
   <a href="https://qr.alipay.com/fkx19369scgxdrkv8mxso92" target="_blank">
     <img src="https://img.shields.io/badge/Alipay-全球支付-00A1E9?style=flat-square&amp;logo=alipay&amp;logoColor=white&amp;labelColor=008CD7">
@@ -744,7 +752,7 @@ SOFTWARE.
 </div>
 <hr>
 <h3 id="--12">📌 开发者社交图谱</h3>
-<h4 id="-24">技术交流</h4>
+<h4 id="-25">技术交流</h4>
 <div align="center" style="margin: 20px 0">
   <a href="https://github.com/ctkqiang" target="_blank">
     <img src="https://img.shields.io/badge/GitHub-开源仓库-181717?style=for-the-badge&amp;logo=github">
@@ -756,7 +764,7 @@ SOFTWARE.
     <img src="https://img.shields.io/badge/LinkedIn-职业网络-0A66C2?style=for-the-badge&amp;logo=linkedin">
   </a>
 </div>
-<h4 id="-25">社交互动</h4>
+<h4 id="-26">社交互动</h4>
 <div align="center" style="margin: 20px 0">
   <a href="https://www.instagram.com/ctkqiang" target="_blank">
     <img src="https://img.shields.io/badge/Instagram-生活瞬间-E4405F?style=for-the-badge&amp;logo=instagram">
@@ -808,7 +816,7 @@ SOFTWARE.
 <footer>
   <span class="no-break">
     trading_view_flutter
-      0.0.3
+      0.0.6
   </span>
   
 </footer>
