@@ -14,7 +14,15 @@ class TradingViewEmbedder {
   TradingViewEmbedder._();
   TradingViewEmbedder.create() : this._();
 
-  late WebViewController controller;
+  WebViewController? _controller;
+  WebViewController get controller {
+    if (_controller == null) {
+      throw StateError('TradingViewEmbedderController 尚未初始化，请先调用 onLoad()。');
+    }
+    return _controller!;
+  }
+
+  bool get isInitialized => _controller != null;
 
   @mustCallSuper
   Future<void> onLoad({
@@ -36,7 +44,7 @@ class TradingViewEmbedder {
       debugPrint('TradingViewWCode: $tradingViewWCode');
     }
 
-    controller = WebViewController()
+    _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(
         tradingViewData.theme == TradingViewTheme.dark
@@ -52,14 +60,6 @@ class TradingViewEmbedder {
           onNavigationRequest: onNavigationRequest,
         ),
       )
-      ..loadRequest(
-        Uri.parse(
-          Uri.dataFromString(
-            tradingViewWCode,
-            mimeType: 'text/html',
-            encoding: Encoding.getByName('utf-8'),
-          ).toString(),
-        ),
-      );
+      ..loadHtmlString(tradingViewWCode);
   }
 }

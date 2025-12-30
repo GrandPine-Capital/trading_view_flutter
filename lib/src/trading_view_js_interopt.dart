@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
-import 'package:trading_view_flutter/src/model/chart_region.dart';
 import 'package:trading_view_flutter/trading_view_flutter.dart';
 
 class TradingViewJsInteropt {

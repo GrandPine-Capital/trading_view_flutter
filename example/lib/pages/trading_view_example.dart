@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 import 'package:trading_view_flutter/trading_view_flutter.dart';
 
 class TradingViewExample extends StatefulWidget {
@@ -21,6 +22,7 @@ class _TradingViewExampleState extends State<TradingViewExample> {
   @override
   void dispose() {
     _themeNotifier.dispose();
+    _chartRegionNotifier.dispose();
     super.dispose();
   }
 
@@ -188,7 +190,12 @@ class _TradingViewExampleState extends State<TradingViewExample> {
         body: ValueListenableBuilder<TradingViewTheme>(
           valueListenable: _themeNotifier,
           builder: (context, theme, child) {
-            return _buildContent(theme, fakeChartData);
+            return ValueListenableBuilder<ChartRegion>(
+              valueListenable: _chartRegionNotifier,
+              builder: (context, region, child) {
+                return _buildContent(theme, fakeChartData, region);
+              },
+            );
           },
         ),
       ),
@@ -198,6 +205,7 @@ class _TradingViewExampleState extends State<TradingViewExample> {
   Widget _buildContent(
     TradingViewTheme theme,
     List<TradingViewChartData> fakeChartData,
+    ChartRegion region,
   ) {
     final tradingData = TradingViewData(
       id: 0,
@@ -215,6 +223,7 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       hideVolume: false,
       isLightWeightChart: false,
       tradingViewChartType: TradingViewChartType.candlestick,
+      chartRegion: region,
     );
 
     final tradingDataLight = TradingViewData(
@@ -230,11 +239,11 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       allowSymbolChange: false,
       saveImage: false,
       showCalendar: true,
-
       hideVolume: false,
       isLightWeightChart: true,
       tradingViewChartType: TradingViewChartType.candlestick,
       chartValue: fakeChartData,
+      chartRegion: region,
     );
 
     final tradingDataBar = TradingViewData(
@@ -254,6 +263,7 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       isLightWeightChart: true,
       tradingViewChartType: TradingViewChartType.bar,
       chartValue: fakeChartData,
+      chartRegion: region,
     );
 
     return Scaffold(
@@ -265,57 +275,52 @@ class _TradingViewExampleState extends State<TradingViewExample> {
           'TradingView 示例',
           style: TextStyle(color: Colors.grey),
         ),
+        excludeHeaderSemantics: true,
+        animateColor: true,
+        scrolledUnderElevation: 0.0,
+        bottomOpacity: 0,
+        elevation: 0,
         backgroundColor: theme == TradingViewTheme.light
             ? Colors.white
             : Colors.black,
         actions: [
-          ValueListenableBuilder<ChartRegion>(
-            valueListenable: _chartRegionNotifier,
-            builder: (context, selectedRegion, child) {
-              return Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-
-                child: DropdownButton<ChartRegion>(
-                  value: selectedRegion,
-                  underline: const SizedBox(),
-                  elevation: 3,
-                  icon: const Icon(Icons.arrow_drop_down, color: Colors.grey),
-                  onChanged: (ChartRegion? newValue) {
-                    if (newValue != null) {
-                      _chartRegionNotifier.value = newValue;
-                    }
-                  },
-                  selectedItemBuilder: (context) => ChartRegion.values
-                      .map(
-                        (e) => Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            e.name.toUpperCase(),
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  items: ChartRegion.values.map((ChartRegion region) {
-                    return DropdownMenuItem<ChartRegion>(
-                      value: region,
-                      child: Text(
-                        region.name,
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              );
-            },
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            child: DropdownButton<ChartRegion>(
+              value: region,
+              underline: const SizedBox(),
+              dropdownColor: theme == TradingViewTheme.light
+                  ? Colors.white
+                  : Colors.grey[900],
+              icon: Icon(Icons.arrow_drop_down, color: Colors.grey, size: 24),
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+                fontWeight: FontWeight.w500,
+              ),
+              onChanged: (ChartRegion? newValue) {
+                if (newValue != null) {
+                  _chartRegionNotifier.value = newValue;
+                }
+              },
+              items: ChartRegion.values.map((ChartRegion region) {
+                return DropdownMenuItem<ChartRegion>(
+                  value: region,
+                  child: Text(
+                    region.name.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: theme == TradingViewTheme.light
+                          ? Colors.black87
+                          : Colors.white,
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
           ),
+
+          const SizedBox(width: 8),
 
           Padding(
             padding: const EdgeInsets.only(right: 12),
@@ -358,17 +363,62 @@ class _TradingViewExampleState extends State<TradingViewExample> {
           addSemanticIndexes: true,
           clipBehavior: Clip.none,
           children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(
+                        color: Colors.grey.withValues(alpha: 0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.public, color: Colors.grey, size: 16),
+                        const SizedBox(width: 6),
+                        Text(
+                          region.name,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
             Container(
               key: const ValueKey('default_chart_container'),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '默认TradingView图',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      top: 8,
+                      bottom: 8,
+                    ),
+                    child: Text(
+                      '默认TradingView图',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                   Padding(
@@ -376,7 +426,9 @@ class _TradingViewExampleState extends State<TradingViewExample> {
                     child: SizedBox(
                       height: 300,
                       child: TradingViewWidget(
-                        key: ValueKey('trading_view_${theme.name}'),
+                        key: ValueKey(
+                          'trading_view_${theme.name}_${region.name}',
+                        ),
                         data: tradingData,
                         width: 600,
                         height: 300,
@@ -393,12 +445,20 @@ class _TradingViewExampleState extends State<TradingViewExample> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Lightweight级蜡烛图',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      top: 8,
+                      bottom: 8,
+                    ),
+                    child: Text(
+                      'Lightweight级蜡烛图',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                   Padding(
@@ -406,7 +466,9 @@ class _TradingViewExampleState extends State<TradingViewExample> {
                     child: SizedBox(
                       height: 300,
                       child: TradingViewWidget(
-                        key: ValueKey('trading_view_light_${theme.name}'),
+                        key: ValueKey(
+                          'trading_view_light_${theme.name}_${region.name}',
+                        ),
                         data: tradingDataLight,
                         width: 600,
                         height: 300,
@@ -422,12 +484,20 @@ class _TradingViewExampleState extends State<TradingViewExample> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Lightweight柱状图',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      top: 8,
+                      bottom: 8,
+                    ),
+                    child: Text(
+                      'Lightweight柱状图',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                   Padding(
@@ -435,7 +505,9 @@ class _TradingViewExampleState extends State<TradingViewExample> {
                     child: SizedBox(
                       height: 300,
                       child: TradingViewWidget(
-                        key: ValueKey('trading_view_light_${theme.name}'),
+                        key: ValueKey(
+                          'trading_view_light_${theme.name}_${region.name}',
+                        ),
                         data: tradingDataBar,
                         width: 600,
                         height: 300,
