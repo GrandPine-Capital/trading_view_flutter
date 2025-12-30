@@ -27,8 +27,15 @@ class _TradingViewWidgetState extends State<TradingViewWidget> {
   @override
   void initState() {
     super.initState();
-
     tradingViewEmbedder.onLoad(tradingViewData: widget.data);
+  }
+
+  @override
+  void didUpdateWidget(TradingViewWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.data != widget.data) {
+      tradingViewEmbedder.onLoad(tradingViewData: widget.data);
+    }
   }
 
   @override

@@ -4,6 +4,7 @@ export 'src/trading_view_widget.dart';
 export 'src/trading_view_light_chart.dart';
 export 'src/model/chart_type.dart';
 export 'src/model/trading_locale.dart';
+export 'src/model/chart_region.dart';
 export 'src/model/theme.dart';
 export 'src/config/constant.dart';
 export 'src/model/trading_view_data.dart';

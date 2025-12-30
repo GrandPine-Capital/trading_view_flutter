@@ -24,8 +24,15 @@ class _TradingViewLightChartState extends State<TradingViewLightChart> {
   @override
   void initState() {
     super.initState();
-
     tradingViewEmbedder.onLoad(tradingViewData: widget.data);
+  }
+
+  @override
+  void didUpdateWidget(TradingViewLightChart oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.data != widget.data) {
+      tradingViewEmbedder.onLoad(tradingViewData: widget.data);
+    }
   }
 
   @override

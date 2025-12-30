@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:trading_view_flutter/trading_view_flutter.dart';
 
 class TradingViewExample extends StatefulWidget {
@@ -11,6 +12,10 @@ class TradingViewExample extends StatefulWidget {
 class _TradingViewExampleState extends State<TradingViewExample> {
   final ValueNotifier<TradingViewTheme> _themeNotifier = ValueNotifier(
     TradingViewTheme.light,
+  );
+
+  final ValueNotifier<ChartRegion> _chartRegionNotifier = ValueNotifier(
+    ChartRegion.china,
   );
 
   @override
@@ -225,6 +230,7 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       allowSymbolChange: false,
       saveImage: false,
       showCalendar: true,
+
       hideVolume: false,
       isLightWeightChart: true,
       tradingViewChartType: TradingViewChartType.candlestick,
@@ -263,82 +269,184 @@ class _TradingViewExampleState extends State<TradingViewExample> {
             ? Colors.white
             : Colors.black,
         actions: [
-          Switch(
-            value: theme == TradingViewTheme.dark,
-            onChanged: (value) {
-              _themeNotifier.value = value
-                  ? TradingViewTheme.dark
-                  : TradingViewTheme.light;
+          ValueListenableBuilder<ChartRegion>(
+            valueListenable: _chartRegionNotifier,
+            builder: (context, selectedRegion, child) {
+              return Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+
+                child: DropdownButton<ChartRegion>(
+                  value: selectedRegion,
+                  underline: const SizedBox(),
+                  elevation: 3,
+                  icon: const Icon(Icons.arrow_drop_down, color: Colors.grey),
+                  onChanged: (ChartRegion? newValue) {
+                    if (newValue != null) {
+                      _chartRegionNotifier.value = newValue;
+                    }
+                  },
+                  selectedItemBuilder: (context) => ChartRegion.values
+                      .map(
+                        (e) => Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            e.name.toUpperCase(),
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  items: ChartRegion.values.map((ChartRegion region) {
+                    return DropdownMenuItem<ChartRegion>(
+                      value: region,
+                      child: Text(
+                        region.name,
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              );
             },
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  theme == TradingViewTheme.dark
+                      ? Icons.nightlight_round
+                      : Icons.wb_sunny,
+                  color: Colors.grey,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Switch(
+                  value: theme == TradingViewTheme.dark,
+                  onChanged: (value) {
+                    _themeNotifier.value = value
+                        ? TradingViewTheme.dark
+                        : TradingViewTheme.light;
+                  },
+                  activeThumbColor: Colors.blueAccent,
+                  inactiveThumbColor: Colors.amber,
+                  inactiveTrackColor: Colors.amber.withValues(alpha: .3),
+                ),
+              ],
+            ),
           ),
         ],
       ),
-      body: ListView(
-        children: [
-          Text(
-            '默认TradingView图',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey,
-            ),
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 300,
-              child: TradingViewWidget(
-                key: ValueKey('trading_view_${theme.name}'),
-                data: tradingData,
-                width: 600,
-                height: 300,
+          addAutomaticKeepAlives: true,
+          addRepaintBoundaries: true,
+          addSemanticIndexes: true,
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              key: const ValueKey('default_chart_container'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '默认TradingView图',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 300,
+                      child: TradingViewWidget(
+                        key: ValueKey('trading_view_${theme.name}'),
+                        data: tradingData,
+                        width: 600,
+                        height: 300,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
 
-          SizedBox(height: 30),
-          Text(
-            'Lightweight级蜡烛图',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 300,
-              child: TradingViewWidget(
-                key: ValueKey('trading_view_light_${theme.name}'),
-                data: tradingDataLight,
-                width: 600,
-                height: 300,
+            SizedBox(height: 30),
+            Container(
+              key: const ValueKey('light_candle_container'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Lightweight级蜡烛图',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 300,
+                      child: TradingViewWidget(
+                        key: ValueKey('trading_view_light_${theme.name}'),
+                        data: tradingDataLight,
+                        width: 600,
+                        height: 300,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          SizedBox(height: 30),
-          Text(
-            'Lightweight柱状图',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 300,
-              child: TradingViewWidget(
-                key: ValueKey('trading_view_light_${theme.name}'),
-                data: tradingDataBar,
-                width: 600,
-                height: 300,
+            SizedBox(height: 30),
+            Container(
+              key: const ValueKey('light_bar_container'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Lightweight柱状图',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 300,
+                      child: TradingViewWidget(
+                        key: ValueKey('trading_view_light_${theme.name}'),
+                        data: tradingDataBar,
+                        width: 600,
+                        height: 300,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
