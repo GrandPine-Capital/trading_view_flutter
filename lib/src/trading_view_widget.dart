@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:trading_view_flutter/src/model/trading_view_data.dart';
 import 'package:trading_view_flutter/src/trading_view_embedder.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -40,17 +42,25 @@ class _TradingViewWidgetState extends State<TradingViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: widget.data.theme == TradingViewTheme.dark
+    return Container(
+      color: widget.data.theme == TradingViewTheme.dark
           ? Colors.black
           : Colors.white,
-      body: SizedBox(
-        height: widget.height,
-        width: widget.width,
-        child: WebViewWidget(
-          key: widget.key,
-          controller: tradingViewEmbedder.controller,
-        ),
+      height: widget.height,
+      width: widget.width,
+      child: WebViewWidget(
+        key: widget.key,
+        controller: tradingViewEmbedder.controller,
+        gestureRecognizers: {
+          Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
+          Factory<VerticalDragGestureRecognizer>(
+            () => VerticalDragGestureRecognizer(),
+          ),
+          Factory<HorizontalDragGestureRecognizer>(
+            () => HorizontalDragGestureRecognizer(),
+          ),
+          Factory<ScaleGestureRecognizer>(() => ScaleGestureRecognizer()),
+        }.toSet(),
       ),
     );
   }
