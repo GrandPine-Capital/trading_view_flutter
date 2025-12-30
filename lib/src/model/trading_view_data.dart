@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:trading_view_flutter/src/model/chart_indicator.dart';
 import 'package:trading_view_flutter/src/model/chart_type.dart';
 import 'package:trading_view_flutter/src/model/chart_region.dart';
 import 'package:trading_view_flutter/src/config/constant.dart';
@@ -55,8 +56,7 @@ class TradingViewData {
   final ChartRegion? chartRegion;
   final TradingViewChartType? tradingViewChartType;
   final List<TradingViewChartData>? chartValue;
-
-  // TODO add indicator
+  final List<ChartIndicator>? indicators;
 
   TradingViewData({
     this.id,
@@ -79,6 +79,7 @@ class TradingViewData {
     this.chartRegion = ChartRegion.china,
     this.tradingViewChartType = TradingViewChartType.candlestick,
     this.chartValue,
+    this.indicators = const [],
   }) : assert(symbol.isNotEmpty, 'symbol 不能为空');
 
   factory TradingViewData.fromJson(Map<String, dynamic> json) {
@@ -116,6 +117,14 @@ class TradingViewData {
           : null,
       chartRegion: json['chartRegion'],
       showDrawingToolBar: json['showDrawingToolBar'],
+      indicators: json['indicators'] != null
+          ? (json['chartValue'] as List<dynamic>).map((item) {
+              final Map<String, dynamic> decodedMap = jsonDecode(
+                item as String,
+              );
+              return ChartIndicator.fromJson(decodedMap);
+            }).toList()
+          : null,
     );
 
     return data;
@@ -146,6 +155,6 @@ class TradingViewData {
 
   @override
   String toString() {
-    return 'TradingViewData{id: $id, symbol: $symbol, autosize: $autosize, interval: $interval, timezone: $timezone, theme: $theme, style: $style, locale: $locale, hideTopToolbar: $hideTopToolbar, allowSymbolChange: $allowSymbolChange, saveImage: $saveImage, showCalendar: $showCalendar, hideVolume: $hideVolume, supportHost: $supportHost}';
+    return 'TradingViewData{id: $id, symbol: $symbol, autosize: $autosize, interval: $interval, timezone: $timezone, theme: $theme, style: $style, locale: $locale, hideTopToolbar: $hideTopToolbar, allowSymbolChange: $allowSymbolChange, saveImage: $saveImage, showCalendar: $showCalendar, hideVolume: $hideVolume, supportHost: $supportHost}, indicators: $indicators';
   }
 }
