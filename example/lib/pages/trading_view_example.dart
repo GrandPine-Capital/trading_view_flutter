@@ -37,7 +37,7 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       id: 1,
       color: '#F44336',
       text: '阻力位',
-      timestamp: DateTime(2025, 12, 26).millisecondsSinceEpoch,
+      timestamp: DateTime(2025, 12, 14).millisecondsSinceEpoch,
     ),
     ChartIndicator(
       id: 2,
@@ -49,7 +49,7 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       id: 3,
       color: '#FF9800',
       text: '突破前高',
-      timestamp: DateTime(2025, 12, 27).millisecondsSinceEpoch,
+      timestamp: DateTime(2025, 12, 20).millisecondsSinceEpoch,
     ),
   ];
 

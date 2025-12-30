@@ -118,11 +118,14 @@ class TradingViewData {
       chartRegion: json['chartRegion'],
       showDrawingToolBar: json['showDrawingToolBar'],
       indicators: json['indicators'] != null
-          ? (json['chartValue'] as List<dynamic>).map((item) {
-              final Map<String, dynamic> decodedMap = jsonDecode(
-                item as String,
-              );
-              return ChartIndicator.fromJson(decodedMap);
+          ? (json['indicators'] as List<dynamic>).map((item) {
+              if (item is String) {
+                final Map<String, dynamic> decodedMap = jsonDecode(item);
+                return ChartIndicator.fromJson(decodedMap);
+              } else if (item is Map<String, dynamic>) {
+                return ChartIndicator.fromJson(item);
+              }
+              throw FormatException('Invalid indicator format');
             }).toList()
           : null,
     );

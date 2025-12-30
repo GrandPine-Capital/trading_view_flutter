@@ -18,6 +18,7 @@ class ChartIndicator {
   final String? text;
   final String? displayPosition;
   final String? color;
+  final String? shape;
   final int? timestamp;
   final Map<String, Object?> metadata;
 
@@ -25,6 +26,7 @@ class ChartIndicator {
     this.id,
     this.text,
     this.displayPosition = 'belowBar',
+    this.shape = 'circle',
     this.color,
     this.timestamp,
     this.metadata = const {},
@@ -36,6 +38,7 @@ class ChartIndicator {
       text: json['text'] as String?,
       displayPosition: json['displayPosition'] as String?,
       color: json['color'] as String?,
+      shape: json['shape'] as String?,
       timestamp: json['timestamp'] as int?,
       metadata: json['metadata'] as Map<String, Object?>,
     );
@@ -43,12 +46,11 @@ class ChartIndicator {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'text': text,
-      'displayPosition': displayPosition,
+      'position': displayPosition,
       'color': color,
-      'timestamp': timestamp,
-      'metadata': metadata,
+      'shape': shape,
+      'time': timestamp,
     };
   }
 

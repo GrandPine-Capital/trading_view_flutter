@@ -26,177 +26,217 @@ class TradingViewJsInteropt {
         tradingViewData.indicators?.map((item) => item.toJson()).toList() ?? [],
       );
 
-      if (kDebugMode) logger.d('chartValue: $chartDataJson');
+      if (kDebugMode) {
+        logger.d('chartValue: $chartDataJson');
+        logger.d('indicators: $indicatorJson');
+      }
 
       if (tradingViewData.tradingViewChartType == TradingViewChartType.bar) {
         return '''
-          
-          <div
-          class="tradingview-widget-container__widget" 
-            style="
-              border:  1px solid #888;  
-              box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-              background: ${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'};
-            ">
-            <div id="symbol" style="font-size:16px; font-weight:bold; margin-bottom:5px; margin-top:10px; margin-left:10px;">
-              ${tradingViewData.symbol}
-            </div>
+            <div
+            class="tradingview-widget-container__widget" 
+              style="
+                border:  1px solid #888;  
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                background: ${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'};
+              ">
+              <div id="symbol" style="font-size:16px; font-weight:bold; margin-bottom:5px; margin-top:10px; margin-left:10px;">
+                ${tradingViewData.symbol}
+              </div>
 
-            <div id="container" style="width:100%; height:250px;"></div>
+              <div id="container" style="width:100%; height:250px;"></div>
 
-            <script>
-              const highlightData = [];
-              const quarterMarkers = [];
-              const indicator = $indicatorJson;
+              <script src="${Constant.tradingLightChartWidgetUrl}"> </script>
+              <script>
+                (function initFixedTopChart() {
+                    const container = document.getElementById('container');
+                    
+                    const chartOptions = {
+                      layout: {
+                        textColor: '${(tradingViewData.theme == TradingViewTheme.light ? 'black' : 'white')}',
+                        background: { type: 'solid', color: '${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'}' }
+                      }
+                    };
 
-              (function() {
-                var script = document.createElement('script');
+                    const chart = LightweightCharts.createChart(
+                      document.getElementById('container'),
+                      chartOptions
+                    );
 
-                script.src = '${Constant.tradingLightChartWidgetUrl}';1
-                script.onload = function() {
-                  var checkReady = setInterval(function() {
+                    const mainSeries = chart.addBarSeries({
+                      upColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#ef5350' : '#26a69a'}',
+                      downColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#26a69a' : '#ef5350'}',
+                      thinBars: true
+                    });
 
-                    if (window.LightweightCharts) {
-                      clearInterval(checkReady);
-
-                      const chartOptions = {
-                        layout: {
-                          textColor: '${(tradingViewData.theme == TradingViewTheme.light ? 'black' : 'white')}',
-                          background: { type: 'solid', color: ' ${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'}' }
-                        }
-                      };
-
-                      const chart = LightweightCharts.createChart(
-                        document.getElementById('container'),
-                        chartOptions
-                      );
-
-                      // 主K线层= 处理业务逻辑与价格  
-                      const candlestickSeries = chart.addCandlestickSeries({
-                        upColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#ef5350' : '#26a69a'}',
-                        downColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#26a69a' : '#ef5350'}',
-                        borderVisible: false,
-                        wickUpColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#ef5350' : '#26a69a'}',
-                        wickDownColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#26a69a' : '#ef5350'}'
-                      });
-
-                      const highlightSeries = chart.addHistogramSeries({
+                    const highlightSeries = chart.addHistogramSeries({
                         priceScaleId: 'overlay',
                         lastValueVisible: false,
                         priceLineVisible: false,
-                      });
+                    });
 
-                      candlestickSeries.setData($chartDataJson);
+                    chart.priceScale('overlay').applyOptions({
+                        scaleMargins: { 
+                          top: 0, 
+                          bottom: 0 
+                        }, 
+                        visible: false,
+                    });
 
-                      ($chartDataJson).forEach((item, index) => {
+                    const data = $chartDataJson;
+                    const indicators = ${jsonEncode(tradingViewData.indicators?.map((e) => e.toJson()).toList() ?? [])};
+
+                    mainSeries.setData(data);
+
+                    const highlightData = [];
+                    const quarterMarkers = [];
+
+                    data.forEach((item, index) => {
                         const date = new Date(item.time * 1000);
                         const month = date.getUTCMonth();
-
                         const q = Math.floor(month / 3) + 1;
-
+                        
                         const colors = [
-                          'rgba(33, 150, 243, 0.08)', 
-                          'rgba(76, 175, 80, 0.08)', 
-                          'rgba(255, 152, 0, 0.08)', 
-                          'rgba(156, 39, 176, 0.08)'
+                            'rgba(33, 150, 243, 0.08)', 
+                            'rgba(76, 175, 80, 0.08)', 
+                            'rgba(255, 152, 0, 0.08)', 
+                            'rgba(156, 39, 176, 0.08)'
                         ];
-
-                        highlightData.push({ 
-                          time: item.time, 
-                          value: 1, 
-                          color: colors[q-1] 
-                        });
+                        
+                        highlightData.push({ time: item.time, value: 1, color: colors[q-1] });
 
                         const prevMonth = index > 0 ? new Date(data[index-1].time * 1000).getUTCMonth() : -1;
-
                         if (q !== (Math.floor(prevMonth / 3) + 1)) {
-                          quarterMarkers.push({
-                            time: item.time, 
-                            position: 'aboveBar',
-                            color: '#ffffff',
-                            shape: 'text',
-                            text: '${tradingViewData.locale == 'zh' ? '季度 ' : 'Quater '}' + q
-                          });
+                            quarterMarkers.push({
+                                time: item.time,
+                                position: 'aboveBar',
+                                color: '#ffffff',
+                                shape: 'text',
+                                text: '${tradingViewData.locale == 'zh' ? '季度 ' : 'Quater '}' + q
+                            });
                         }
-                      });
+                    });
 
-                      candlestickSeries.setMarkers(quarterMarkers);
+                    mainSeries.setMarkers(indicators);
+                    // highlightSeries.setData(highlightData);
+                    highlightSeries.setMarkers(quarterMarkers);
 
-                      highlightSeries.setData(highlightData);
-                      highlightSeries.setMarkers(quaterMarkers)
+                    chart.timeScale().fitContent();
 
-                      chart.timeScale().fitContent();
-                    }
-                  }, 50);
-                };
-
-                document.head.appendChild(script);
-
-                window.addEventListener('resize', () => {
-                  chart.applyOptions({ width: container.clientWidth });
-                });
-              })();
-            </script>
-          </div>
-      ''';
+                    window.addEventListener('resize', () => {
+                        chart.applyOptions({ width: container.clientWidth });
+                    });
+                })();
+              </script>
+            </div>
+        ''';
       } else if (tradingViewData.tradingViewChartType ==
           TradingViewChartType.candlestick) {
         return '''
-          <div
-          class="tradingview-widget-container__widget" 
-            style="
-              border:  1px solid #888;  
-              box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-              background: ${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'};
-            ">
-            <div id="symbol" style="font-size:16px; font-weight:bold; margin-bottom:5px; margin-top:10px; margin-left:10px;">
-              ${tradingViewData.symbol}
-            </div>
+            <div
+            class="tradingview-widget-container__widget" 
+              style="
+                border:  1px solid #888;  
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                background: ${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'};
+              ">
+              <div id="symbol" style="font-size:16px; font-weight:bold; margin-bottom:5px; margin-top:10px; margin-left:10px;">
+                ${tradingViewData.symbol}
+              </div>
 
-            <div id="container" style="width:100%; height:250px;"></div>
+              <div id="container" style="width:100%; height:250px;"></div>
 
-            <script>
-              (function() {
-                var script = document.createElement('script');
+              <script src="${Constant.tradingLightChartWidgetUrl}"> </script>
+              <script>
 
-                script.src = '${Constant.tradingLightChartWidgetUrl}';1
-                script.onload = function() {
-                  var checkReady = setInterval(function() {
+                (function initFixedTopChart() {
+                    const container = document.getElementById('container');
+                    
+                    const chartOptions = {
+                      layout: {
+                        textColor: '${(tradingViewData.theme == TradingViewTheme.light ? 'black' : 'white')}',
+                        background: { type: 'solid', color: ' ${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'}' }
+                      }
+                    };
 
-                    if (window.LightweightCharts) {
-                      clearInterval(checkReady);
+                    const chart = LightweightCharts.createChart(
+                      document.getElementById('container'),
+                      chartOptions
+                    );
 
-                      const chartOptions = {
-                        layout: {
-                          textColor: '${(tradingViewData.theme == TradingViewTheme.light ? 'black' : 'white')}',
-                          background: { type: 'solid', color: ' ${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'}' }
+                    const mainSeries =  chart.addCandlestickSeries({
+                      upColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#ef5350' : '#26a69a'}',
+                      downColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#26a69a' : '#ef5350'}',
+                      borderVisible: false,
+                      wickUpColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#ef5350' : '#26a69a'}',
+                      wickDownColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#26a69a' : '#ef5350'}'
+                    });
+
+                    const highlightSeries = chart.addHistogramSeries({
+                        priceScaleId: 'overlay',
+                        lastValueVisible: false,
+                        priceLineVisible: false,
+                    });
+
+                    chart.priceScale('overlay').applyOptions({
+                        scaleMargins: { 
+                          top: 0, 
+                          bottom: 0 
+                        }, 
+                        visible: false,
+                    });
+
+                    const data = $chartDataJson;
+
+                    mainSeries.setData(data);
+
+                    const highlightData = [];
+                    const quarterMarkers = [];
+                    const indicators = ${jsonEncode(tradingViewData.indicators?.map((e) => e.toJson()).toList() ?? [])};
+
+                    data.forEach((item, index) => {
+                        const date = new Date(item.time * 1000);
+                        const month = date.getUTCMonth();
+                        const q = Math.floor(month / 3) + 1;
+                        
+                        const colors = [
+                            'rgba(33, 150, 243, 0.08)', 
+                            'rgba(76, 175, 80, 0.08)', 
+                            'rgba(255, 152, 0, 0.08)', 
+                            'rgba(156, 39, 176, 0.08)'
+                        ];
+                        
+                        // 每一根K线对应的背景色块，value=1 配合 overlay 轴实现顶格
+                        highlightData.push({ time: item.time, value: 1, color: colors[q-1] });
+
+                        // 季度切换检测逻辑
+                        const prevMonth = index > 0 ? new Date(data[index-1].time * 1000).getUTCMonth() : -1;
+                        if (q !== (Math.floor(prevMonth / 3) + 1)) {
+                            quarterMarkers.push({
+                                time: item.time,
+                                position: 'aboveBar', // 标记在柱体上方，即屏幕最顶端
+                                color: '#ffffff',
+                                shape: 'text',
+                                text: 'Fucking Quater ' + q 
+                            });
                         }
-                      };
+                    });
 
-                      const chart = LightweightCharts.createChart(
-                        document.getElementById('container'),
-                        chartOptions
-                      );
+                
+                    mainSeries.setMarkers(indicators); 
+                    
+                    // highlightSeries.setData(highlightData);
+                    highlightSeries.setMarkers(quarterMarkers);
 
-                      const candlestickSeries = chart.addCandlestickSeries({
-                        upColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#ef5350' : '#26a69a'}',
-                        downColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#26a69a' : '#ef5350'}',
-                        borderVisible: false,
-                        wickUpColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#ef5350' : '#26a69a'}',
-                        wickDownColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#26a69a' : '#ef5350'}'
-                      });
-
-                      candlestickSeries.setData($chartDataJson);
-
-                      chart.timeScale().fitContent();
-                    }
-                  }, 50);
-                };
-
-                document.head.appendChild(script);
-              })();
-            </script>
-          </div>
+                    chart.timeScale().fitContent();
+ 
+                    window.addEventListener('resize', () => {
+                        chart.applyOptions({ width: container.clientWidth });
+                    });
+                })();
+              </script>
+            </div>
+            
           ''';
       }
 
