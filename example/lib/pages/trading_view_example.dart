@@ -54,126 +54,157 @@ class _TradingViewExampleState extends State<TradingViewExample> {
     ChartVolume(
       volume: 1250000,
       time: DateTime(2025, 12, 1).millisecondsSinceEpoch,
+      color: 'rgba(38, 166, 154, 0.5)',
     ),
     ChartVolume(
       volume: 1320000,
       time: DateTime(2025, 12, 2).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 1380000,
       time: DateTime(2025, 12, 3).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 1350000,
       time: DateTime(2025, 12, 4).millisecondsSinceEpoch,
+      color: 'rgba(38, 166, 154, 0.5)',
     ),
     ChartVolume(
       volume: 1420000,
       time: DateTime(2025, 12, 5).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 1480000,
       time: DateTime(2025, 12, 6).millisecondsSinceEpoch,
+      color: 'rgba(38, 166, 154, 0.5)',
     ),
     ChartVolume(
       volume: 1580000,
       time: DateTime(2025, 12, 7).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 1650000,
       time: DateTime(2025, 12, 8).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 1720000,
       time: DateTime(2025, 12, 9).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 1800000,
       time: DateTime(2025, 12, 10).millisecondsSinceEpoch,
+      color: 'rgba(38, 166, 154, 0.5)',
     ),
     ChartVolume(
       volume: 1890000,
       time: DateTime(2025, 12, 11).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 2100000,
       time: DateTime(2025, 12, 12).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 2850000,
       time: DateTime(2025, 12, 13).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 3200000,
       time: DateTime(2025, 12, 14).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 3560000,
       time: DateTime(2025, 12, 15).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 3800000,
       time: DateTime(2025, 12, 16).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 4120000,
       time: DateTime(2025, 12, 17).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 4380000,
       time: DateTime(2025, 12, 18).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 4650000,
       time: DateTime(2025, 12, 19).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 4500000,
       time: DateTime(2025, 12, 20).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 4200000,
       time: DateTime(2025, 12, 21).millisecondsSinceEpoch,
+      color: 'rgba(38, 166, 154, 0.5)',
     ),
     ChartVolume(
       volume: 3850000,
       time: DateTime(2025, 12, 22).millisecondsSinceEpoch,
+      color: 'rgba(38, 166, 154, 0.5)',
     ),
     ChartVolume(
       volume: 3500000,
       time: DateTime(2025, 12, 23).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 3280000,
       time: DateTime(2025, 12, 24).millisecondsSinceEpoch,
+      color: 'rgba(38, 166, 154, 0.5)',
     ),
     ChartVolume(
       volume: 3100000,
       time: DateTime(2025, 12, 25).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 3400000,
       time: DateTime(2025, 12, 26).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 4200000,
       time: DateTime(2025, 12, 27).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 5820000,
       time: DateTime(2025, 12, 28).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 6500000,
       time: DateTime(2025, 12, 29).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 7200000,
       time: DateTime(2025, 12, 30).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
     ChartVolume(
       volume: 7850000,
       time: DateTime(2025, 12, 31).millisecondsSinceEpoch,
+      color: 'rgba(239, 83, 80, 0.5)',
     ),
   ];
 
@@ -480,8 +511,8 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       tradingViewChartType: TradingViewChartType.bar,
       chartValue: fakeChartData,
       chartRegion: region,
-
       indicators: indicators,
+      volume: fakeVolume,
     );
 
     return Scaffold(

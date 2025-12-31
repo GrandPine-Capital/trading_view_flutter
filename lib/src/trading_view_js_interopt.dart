@@ -293,7 +293,7 @@ class TradingViewJsInteropt {
                 const volumeData = volumeRaw.map(item => ({
                   time: new Date(item.time).toISOString().split('T')[0],
                   value: item.volume,
-                  color: item.color || 'rgba(38, 166, 154, 0.5)',
+                  color: item.color,
                 }));
 
                 const highlightData = [];
