@@ -44,6 +44,7 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       id: 2,
       color: '#FF9800',
       text: '突破',
+      shape: 'arrowUp',
       timestamp: DateTime(2025, 12, 20).millisecondsSinceEpoch,
       displayPosition: 'aboveBar',
     ),

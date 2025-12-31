@@ -64,8 +64,6 @@ class TradingViewJsInteropt {
                       horzLines: { visible: false } 
                   },
                   timeScale: {
-                      rightOffset: 10, 
-                      fixLeftEdge: true,
                       fixRightEdge: true,
                       barSpacing: 6, 
                       minBarSpacing: 3,
@@ -196,8 +194,6 @@ class TradingViewJsInteropt {
                       horzLines: { visible: false } 
                   },
                   timeScale: {
-                      rightOffset: 10, 
-                      fixLeftEdge: true,
                       fixRightEdge: true,
                       barSpacing: 6, 
                       minBarSpacing: 3,
@@ -207,8 +203,17 @@ class TradingViewJsInteropt {
                       autoScale: true,
                       alignLabels: true,
                   },
-                  handleScroll: true,
-                  handleScale: true,
+                  handleScroll: {
+                    mouseWheel: true,
+                    pressedMouseMove: true,
+                    horzTouchDrag: true,
+                    vertTouchDrag: true,
+                  },
+                  handleScale: {
+                    axisPressedMouseMove: true,
+                    mouseWheel: true,
+                    pinch: true,
+                  },
                 };
 
                 const chart = LightweightCharts.createChart(container, chartOptions);
@@ -268,7 +273,7 @@ class TradingViewJsInteropt {
                     quarterMarkers.push({
                       time: item.time,
                       position: 'aboveBar', 
-                      color: '${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'}',
+                      color: '${tradingViewData.theme == TradingViewTheme.light ? '#666' : '#ccc'}',
                       shape: 'text',
                       text: '${tradingViewData.locale == 'zh' ? '季度 ' : 'Q '}' + q,
                       backgroundColor: '${tradingViewData.theme == TradingViewTheme.light ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)'}',
