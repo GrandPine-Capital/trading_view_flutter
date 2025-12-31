@@ -1,3 +1,5 @@
+import 'package:trading_view_flutter/src/model/indicator_shape.dart';
+
 /// 图表指标数据模型
 ///
 /// 用于在TradingView图表上显示自定义指标和标记。
@@ -8,9 +10,10 @@
 /// ChartIndicator(
 ///   id: 1,
 ///   text: "买入信号",
-///   displayPosition: "top: 10px; left: 20px;",
+///   displayPosition: "belowBar",
 ///   color: "#FF5733",
 ///   timestamp: 1640995200,
+///   shape: Indicatorshape.circle.name,
 /// )
 /// ```
 class ChartIndicator {
@@ -49,7 +52,7 @@ class ChartIndicator {
       'text': text,
       'position': displayPosition,
       'color': color,
-      'shape': shape,
+      'shape': shape ?? Indicatorshape.circle.name,
       'time': timestamp,
     };
   }

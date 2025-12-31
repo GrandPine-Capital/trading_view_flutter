@@ -8,6 +8,7 @@ export 'src/model/chart_region.dart';
 export 'src/model/theme.dart';
 export 'src/model/chart_indicator_type.dart';
 export 'src/model/chart_indicator.dart';
+export 'src/model/indicator_shape.dart';
 export 'src/config/constant.dart';
 export 'src/model/trading_view_data.dart';
 export 'src/model/trading_view_chart_data.dart';
