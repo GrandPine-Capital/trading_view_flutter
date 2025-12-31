@@ -4,6 +4,7 @@ import 'package:trading_view_flutter/src/model/chart_indicator.dart';
 import 'package:trading_view_flutter/src/model/chart_type.dart';
 import 'package:trading_view_flutter/src/model/chart_region.dart';
 import 'package:trading_view_flutter/src/config/constant.dart';
+import 'package:trading_view_flutter/src/model/chart_volume.dart';
 import 'package:trading_view_flutter/src/model/interval.dart';
 import 'package:trading_view_flutter/src/model/theme.dart';
 import 'package:trading_view_flutter/src/model/trading_view_chart_data.dart';
@@ -57,6 +58,7 @@ class TradingViewData {
   final TradingViewChartType? tradingViewChartType;
   final List<TradingViewChartData>? chartValue;
   final List<ChartIndicator>? indicators;
+  final List<ChartVolume>? volume;
 
   TradingViewData({
     this.id,
@@ -78,8 +80,10 @@ class TradingViewData {
     this.isLightWeightChart = false,
     this.chartRegion = ChartRegion.china,
     this.tradingViewChartType = TradingViewChartType.candlestick,
-    this.chartValue,
+    this.chartValue = const [],
     this.indicators = const [],
+    this.volume = const [],
+    s,
   }) : assert(symbol.isNotEmpty, 'symbol 不能为空');
 
   factory TradingViewData.fromJson(Map<String, dynamic> json) {
@@ -128,6 +132,17 @@ class TradingViewData {
               throw FormatException('Invalid indicator format');
             }).toList()
           : null,
+      volume: json['volume'] != null
+          ? (json['volume'] as List<dynamic>).map((item) {
+              if (item is String) {
+                final Map<String, dynamic> decodedMap = jsonDecode(item);
+                return ChartVolume.fromJson(decodedMap);
+              } else if (item is Map<String, dynamic>) {
+                return ChartVolume.fromJson(item);
+              }
+              throw FormatException('Invalid indicator format');
+            }).toList()
+          : null,
     );
 
     return data;
@@ -158,6 +173,30 @@ class TradingViewData {
 
   @override
   String toString() {
-    return 'TradingViewData{id: $id, symbol: $symbol, autosize: $autosize, interval: $interval, timezone: $timezone, theme: $theme, style: $style, locale: $locale, hideTopToolbar: $hideTopToolbar, allowSymbolChange: $allowSymbolChange, saveImage: $saveImage, showCalendar: $showCalendar, hideVolume: $hideVolume, supportHost: $supportHost}, indicators: $indicators';
+    return '''
+      TradingViewData{
+        id: $id,
+        symbol: $symbol,
+        autosize: $autosize,
+        interval: $interval,
+        timezone: $timezone,
+        theme: $theme,
+        style: $style,
+        locale: $locale,
+        hideTopToolbar: $hideTopToolbar,
+        allowSymbolChange: $allowSymbolChange,
+        saveImage: $saveImage,
+        showCalendar: $showCalendar,
+        hideVolume: $hideVolume,
+        showDrawingToolBar: $showDrawingToolBar,
+        showComprehennsiveDetails: $showComprehennsiveDetails,
+        supportHost: $supportHost,
+        isLightWeightChart: $isLightWeightChart,
+        chartRegion: $chartRegion,
+        tradingViewChartType: $tradingViewChartType,
+        chartValue: $chartValue,
+        indicators: $indicators,
+        volume: $volume
+      }''';
   }
 }

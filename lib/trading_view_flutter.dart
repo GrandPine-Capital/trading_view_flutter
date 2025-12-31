@@ -6,6 +6,7 @@ export 'src/model/chart_type.dart';
 export 'src/model/trading_locale.dart';
 export 'src/model/chart_region.dart';
 export 'src/model/theme.dart';
+export 'src/model/chart_volume.dart';
 export 'src/model/chart_indicator_type.dart';
 export 'src/model/chart_indicator.dart';
 export 'src/model/indicator_shape.dart';

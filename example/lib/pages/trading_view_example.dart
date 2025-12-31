@@ -50,15 +50,147 @@ class _TradingViewExampleState extends State<TradingViewExample> {
     ),
   ];
 
-  /// 真实波动数据 - 模拟科技股高波动性走势
+  final fakeVolume = <ChartVolume>[
+    ChartVolume(
+      volume: 1250000,
+      time: DateTime(2025, 12, 1).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 1320000,
+      time: DateTime(2025, 12, 2).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 1380000,
+      time: DateTime(2025, 12, 3).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 1350000,
+      time: DateTime(2025, 12, 4).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 1420000,
+      time: DateTime(2025, 12, 5).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 1480000,
+      time: DateTime(2025, 12, 6).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 1580000,
+      time: DateTime(2025, 12, 7).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 1650000,
+      time: DateTime(2025, 12, 8).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 1720000,
+      time: DateTime(2025, 12, 9).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 1800000,
+      time: DateTime(2025, 12, 10).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 1890000,
+      time: DateTime(2025, 12, 11).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 2100000,
+      time: DateTime(2025, 12, 12).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 2850000,
+      time: DateTime(2025, 12, 13).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 3200000,
+      time: DateTime(2025, 12, 14).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 3560000,
+      time: DateTime(2025, 12, 15).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 3800000,
+      time: DateTime(2025, 12, 16).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 4120000,
+      time: DateTime(2025, 12, 17).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 4380000,
+      time: DateTime(2025, 12, 18).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 4650000,
+      time: DateTime(2025, 12, 19).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 4500000,
+      time: DateTime(2025, 12, 20).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 4200000,
+      time: DateTime(2025, 12, 21).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 3850000,
+      time: DateTime(2025, 12, 22).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 3500000,
+      time: DateTime(2025, 12, 23).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 3280000,
+      time: DateTime(2025, 12, 24).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 3100000,
+      time: DateTime(2025, 12, 25).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 3400000,
+      time: DateTime(2025, 12, 26).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 4200000,
+      time: DateTime(2025, 12, 27).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 5820000,
+      time: DateTime(2025, 12, 28).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 6500000,
+      time: DateTime(2025, 12, 29).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 7200000,
+      time: DateTime(2025, 12, 30).millisecondsSinceEpoch,
+    ),
+    ChartVolume(
+      volume: 7850000,
+      time: DateTime(2025, 12, 31).millisecondsSinceEpoch,
+    ),
+  ];
+
   final fakeChartData = <TradingViewChartData>[
-    // 底部震荡 - 高波动吸筹
     TradingViewChartData(
       time: DateTime(2025, 12, 1),
       open: 45.2,
       high: 47.8,
       low: 43.1,
       close: 44.9,
+    ),
+    TradingViewChartData(
+      time: DateTime(2025, 12, 2),
+      open: 44.9,
+      high: 46.5,
+      low: 44.0,
+      close: 46.3,
     ),
     TradingViewChartData(
       time: DateTime(2025, 12, 3),
@@ -68,20 +200,39 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       close: 47.2,
     ),
     TradingViewChartData(
+      time: DateTime(2025, 12, 4),
+      open: 47.2,
+      high: 48.0,
+      low: 46.5,
+      close: 47.1,
+    ),
+    TradingViewChartData(
       time: DateTime(2025, 12, 5),
       open: 47.1,
       high: 49.5,
       low: 45.2,
       close: 48.8,
     ),
-
-    // 缓慢上升 - 震荡上行
+    TradingViewChartData(
+      time: DateTime(2025, 12, 6),
+      open: 48.8,
+      high: 49.2,
+      low: 48.0,
+      close: 48.7,
+    ),
     TradingViewChartData(
       time: DateTime(2025, 12, 7),
       open: 48.7,
       high: 51.8,
       low: 47.2,
       close: 50.1,
+    ),
+    TradingViewChartData(
+      time: DateTime(2025, 12, 8),
+      open: 50.1,
+      high: 51.0,
+      low: 49.5,
+      close: 50.5,
     ),
     TradingViewChartData(
       time: DateTime(2025, 12, 9),
@@ -91,14 +242,26 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       close: 52.7,
     ),
     TradingViewChartData(
+      time: DateTime(2025, 12, 10),
+      open: 52.7,
+      high: 53.5,
+      low: 52.0,
+      close: 52.3,
+    ),
+    TradingViewChartData(
       time: DateTime(2025, 12, 11),
       open: 52.3,
       high: 56.2,
       low: 50.8,
       close: 54.9,
     ),
-
-    // 突破关键位 - 放量突破
+    TradingViewChartData(
+      time: DateTime(2025, 12, 12),
+      open: 54.9,
+      high: 57.0,
+      low: 54.5,
+      close: 55.9,
+    ),
     TradingViewChartData(
       time: DateTime(2025, 12, 13),
       open: 55.9,
@@ -120,8 +283,13 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       low: 58.8,
       close: 65.4,
     ),
-
-    // 加速上涨 - 连续拉升
+    TradingViewChartData(
+      time: DateTime(2025, 12, 16),
+      open: 65.4,
+      high: 68.0,
+      low: 64.5,
+      close: 66.0,
+    ),
     TradingViewChartData(
       time: DateTime(2025, 12, 17),
       open: 66.0,
@@ -143,8 +311,20 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       low: 70.7,
       close: 79.4,
     ),
-
-    // 回调整理 - 深度回调
+    TradingViewChartData(
+      time: DateTime(2025, 12, 20),
+      open: 79.4,
+      high: 81.5,
+      low: 78.5,
+      close: 80.2,
+    ),
+    TradingViewChartData(
+      time: DateTime(2025, 12, 21),
+      open: 80.2,
+      high: 81.0,
+      low: 79.0,
+      close: 79.8,
+    ),
     TradingViewChartData(
       time: DateTime(2025, 12, 22),
       open: 79.8,
@@ -153,20 +333,60 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       close: 73.2,
     ),
     TradingViewChartData(
+      time: DateTime(2025, 12, 23),
+      open: 73.2,
+      high: 77.5,
+      low: 72.0,
+      close: 76.2,
+    ),
+    TradingViewChartData(
       time: DateTime(2025, 12, 24),
       open: 76.2,
       high: 79.8,
       low: 68.5,
       close: 70.6,
     ),
-
-    // 再次启动 - 爆发性上涨
+    TradingViewChartData(
+      time: DateTime(2025, 12, 25),
+      open: 70.6,
+      high: 72.5,
+      low: 70.0,
+      close: 71.5,
+    ),
+    TradingViewChartData(
+      time: DateTime(2025, 12, 26),
+      open: 71.5,
+      high: 84.0,
+      low: 71.2,
+      close: 83.2,
+    ),
+    TradingViewChartData(
+      time: DateTime(2025, 12, 27),
+      open: 83.2,
+      high: 85.0,
+      low: 82.5,
+      close: 84.5,
+    ),
     TradingViewChartData(
       time: DateTime(2025, 12, 28),
       open: 83.2,
       high: 95.9,
       low: 80.6,
       close: 92.4,
+    ),
+    TradingViewChartData(
+      time: DateTime(2025, 12, 29),
+      open: 92.4,
+      high: 102.5,
+      low: 91.0,
+      close: 101.0,
+    ),
+    TradingViewChartData(
+      time: DateTime(2025, 12, 30),
+      open: 101.0,
+      high: 110.0,
+      low: 100.0,
+      close: 105.0,
     ),
     TradingViewChartData(
       time: DateTime(2025, 12, 31),
@@ -239,6 +459,7 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       chartValue: fakeChartData,
       chartRegion: region,
       indicators: indicators,
+      volume: fakeVolume,
     );
 
     final tradingDataBar = TradingViewData(
