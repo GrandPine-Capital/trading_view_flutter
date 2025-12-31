@@ -32,212 +32,273 @@ class TradingViewJsInteropt {
       }
 
       if (tradingViewData.tradingViewChartType == TradingViewChartType.bar) {
+        final indicatorJson = jsonEncode(
+          tradingViewData.indicators?.map((e) => e.toJson()).toList() ?? [],
+        );
+
         return '''
-            <div
-            class="tradingview-widget-container__widget" 
-              style="
-                border:  1px solid #888;  
-                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-                background: ${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'};
-              ">
-              <div id="symbol" style="font-size:16px; font-weight:bold; margin-bottom:5px; margin-top:10px; margin-left:10px;">
-                ${tradingViewData.symbol}
-              </div>
+        <div class="tradingview-widget-container__widget" 
+          style="
+            border: 1px solid #888;  
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            background: ${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'};
+          ">
+          <div id="symbol" style="font-size:16px; font-weight:bold; margin-bottom:5px; margin-top:10px; margin-left:10px; color: ${tradingViewData.theme == TradingViewTheme.light ? 'black' : 'white'};">
+            ${tradingViewData.symbol}
+          </div>
 
-              <div id="container" style="width:100%; height:250px;"></div>
+          <div id="container" style="width:100%; height:250px;"></div>
 
-              <script src="${Constant.tradingLightChartWidgetUrl}"> </script>
-              <script>
-                (function initFixedTopChart() {
-                    const container = document.getElementById('container');
-                    
-                    const chartOptions = {
-                      layout: {
-                        textColor: '${(tradingViewData.theme == TradingViewTheme.light ? 'black' : 'white')}',
-                        background: { type: 'solid', color: '${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'}' }
-                      }
-                    };
+          <script src="${Constant.tradingLightChartWidgetUrl}"></script>
+          <script>
+            (function initFixedTopChart() {
+              const container = document.getElementById('container');
+              
+            const chartOptions = {
+                  layout: {
+                      textColor: '${(tradingViewData.theme == TradingViewTheme.light ? 'black' : 'white')}',
+                      background: { type: 'solid', color: '${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'}' }
+                  },
+                  grid: { 
+                      vertLines: { visible: false }, 
+                      horzLines: { visible: false } 
+                  },
+                  timeScale: {
+                      rightOffset: 10, 
+                      fixLeftEdge: true,
+                      fixRightEdge: true,
+                      barSpacing: 6, 
+                      minBarSpacing: 3,
+                      lockVisibleTimeRangeOnResize: false, 
+                  },
+                  rightPriceScale: {
+                      autoScale: true,
+                      alignLabels: true,
+                  },
+                  handleScroll: true,
+                  handleScale: true,
+                };
 
-                    const chart = LightweightCharts.createChart(
-                      document.getElementById('container'),
-                      chartOptions
-                    );
+              const chart = LightweightCharts.createChart(container, chartOptions);
 
-                    const mainSeries = chart.addBarSeries({
-                      upColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#ef5350' : '#26a69a'}',
-                      downColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#26a69a' : '#ef5350'}',
-                      thinBars: true
-                    });
+              const mainSeries = chart.addBarSeries({
+                upColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#ef5350' : '#26a69a'}',
+                downColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#26a69a' : '#ef5350'}',
+                thinBars: true
+              });
 
-                    const highlightSeries = chart.addHistogramSeries({
-                        priceScaleId: 'overlay',
-                        lastValueVisible: false,
-                        priceLineVisible: false,
-                    });
+              const highlightSeries = chart.addHistogramSeries({
+                priceScaleId: 'overlay',
+                lastValueVisible: false,
+                priceLineVisible: false,
+              });
 
-                    chart.priceScale('overlay').applyOptions({
-                        scaleMargins: { 
-                          top: 0, 
-                          bottom: 0 
-                        }, 
-                        visible: false,
-                    });
+              chart.priceScale('overlay').applyOptions({
+                scaleMargins: { top: 0, bottom: 0 }, 
+                visible: false,
+              });
 
-                    const data = $chartDataJson;
-                    const indicators = ${jsonEncode(tradingViewData.indicators?.map((e) => e.toJson()).toList() ?? [])};
+              const data = $chartDataJson;
+              
+              const rawIndicators = $indicatorJson;
+              const indicators = rawIndicators.map(ind => {
+                const d = new Date(ind.time);
+                return {
+                  ...ind,
+                  time: d.toISOString().split('T')[0]
+                };
+              });
 
-                    mainSeries.setData(data);
+              const highlightData = [];
+              const quarterMarkers = [];
 
-                    const highlightData = [];
-                    const quarterMarkers = [];
+              mainSeries.setData(data);
 
-                    data.forEach((item, index) => {
-                        const date = new Date(item.time * 1000);
-                        const month = date.getUTCMonth();
-                        const q = Math.floor(month / 3) + 1;
-                        
-                        const colors = [
-                            'rgba(33, 150, 243, 0.08)', 
-                            'rgba(76, 175, 80, 0.08)', 
-                            'rgba(255, 152, 0, 0.08)', 
-                            'rgba(156, 39, 176, 0.08)'
-                        ];
-                        
-                        highlightData.push({ time: item.time, value: 1, color: colors[q-1] });
+              data.forEach((item, index) => {
+                const date = new Date(item.time); 
+                const month = date.getUTCMonth();
+                const q = Math.floor(month / 3) + 1;
+                
+                const colors = [
+                  'rgba(33, 150, 243, 0.05)', 
+                  'rgba(76, 175, 80, 0.05)', 
+                  'rgba(255, 152, 0, 0.05)', 
+                  'rgba(156, 39, 176, 0.05)'
+                ];
+                
+                highlightData.push({ time: item.time, value: 1, color: colors[q-1] });
 
-                        const prevMonth = index > 0 ? new Date(data[index-1].time * 1000).getUTCMonth() : -1;
-                        if (q !== (Math.floor(prevMonth / 3) + 1)) {
-                            quarterMarkers.push({
-                                time: item.time,
-                                position: 'aboveBar',
-                                color: '#ffffff',
-                                shape: 'text',
-                                text: '${tradingViewData.locale == 'zh' ? '季度 ' : 'Quater '}' + q
-                            });
-                        }
-                    });
+                const prevDateStr = index > 0 ? data[index-1].time : null;
+                const prevQ = prevDateStr ? Math.floor(new Date(prevDateStr).getUTCMonth() / 3) + 1 : -1;
 
-                    mainSeries.setMarkers(indicators);
-                    // highlightSeries.setData(highlightData);
-                    highlightSeries.setMarkers(quarterMarkers);
+                if (q !== prevQ) {
+                  quarterMarkers.push({
+                    time: item.time,
+                    position: 'aboveBar', 
+                    color: '${tradingViewData.theme == TradingViewTheme.light ? '#666' : '#ccc'}',
+                    shape: 'text',
+                    text: '${tradingViewData.locale == 'zh' ? '季度 ' : 'Q '}' + q,
+                    backgroundColor: '${tradingViewData.theme == TradingViewTheme.light ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)'}',
+                  });
+                }
+              });
 
-                    chart.timeScale().fitContent();
+              highlightSeries.setData(highlightData);
 
-                    window.addEventListener('resize', () => {
-                        chart.applyOptions({ width: container.clientWidth });
-                    });
-                })();
-              </script>
-            </div>
-        ''';
+              const allMarkers = [...indicators, ...quarterMarkers].sort((a, b) => {
+                return new Date(a.time).getTime() - new Date(b.time).getTime();
+              });
+              
+              mainSeries.setMarkers(allMarkers);
+
+              setTimeout(() => {
+                  chart.timeScale().fitContent();
+                }, 100);
+
+                window.addEventListener('resize', () => {
+                  chart.applyOptions({ width: container.clientWidth });
+                  if (chart.timeScale().options().barSpacing > 15) {
+                    chart.timeScale().applyOptions({ barSpacing: 10 });
+                  }
+                  chart.timeScale().fitContent();
+                });
+            })();
+          </script>
+        </div>
+      ''';
       } else if (tradingViewData.tradingViewChartType ==
           TradingViewChartType.candlestick) {
         return '''
-            <div
-            class="tradingview-widget-container__widget" 
-              style="
-                border:  1px solid #888;  
-                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-                background: ${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'};
-              ">
-              <div id="symbol" style="font-size:16px; font-weight:bold; margin-bottom:5px; margin-top:10px; margin-left:10px;">
-                ${tradingViewData.symbol}
-              </div>
-
-              <div id="container" style="width:100%; height:250px;"></div>
-
-              <script src="${Constant.tradingLightChartWidgetUrl}"> </script>
-              <script>
-
-                (function initFixedTopChart() {
-                    const container = document.getElementById('container');
-                    
-                    const chartOptions = {
-                      layout: {
-                        textColor: '${(tradingViewData.theme == TradingViewTheme.light ? 'black' : 'white')}',
-                        background: { type: 'solid', color: ' ${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'}' }
-                      }
-                    };
-
-                    const chart = LightweightCharts.createChart(
-                      document.getElementById('container'),
-                      chartOptions
-                    );
-
-                    const mainSeries =  chart.addCandlestickSeries({
-                      upColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#ef5350' : '#26a69a'}',
-                      downColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#26a69a' : '#ef5350'}',
-                      borderVisible: false,
-                      wickUpColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#ef5350' : '#26a69a'}',
-                      wickDownColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#26a69a' : '#ef5350'}'
-                    });
-
-                    const highlightSeries = chart.addHistogramSeries({
-                        priceScaleId: 'overlay',
-                        lastValueVisible: false,
-                        priceLineVisible: false,
-                    });
-
-                    chart.priceScale('overlay').applyOptions({
-                        scaleMargins: { 
-                          top: 0, 
-                          bottom: 0 
-                        }, 
-                        visible: false,
-                    });
-
-                    const data = $chartDataJson;
-
-                    mainSeries.setData(data);
-
-                    const highlightData = [];
-                    const quarterMarkers = [];
-                    const indicators = ${jsonEncode(tradingViewData.indicators?.map((e) => e.toJson()).toList() ?? [])};
-
-                    data.forEach((item, index) => {
-                        const date = new Date(item.time * 1000);
-                        const month = date.getUTCMonth();
-                        const q = Math.floor(month / 3) + 1;
-                        
-                        const colors = [
-                            'rgba(33, 150, 243, 0.08)', 
-                            'rgba(76, 175, 80, 0.08)', 
-                            'rgba(255, 152, 0, 0.08)', 
-                            'rgba(156, 39, 176, 0.08)'
-                        ];
-                        
-                        // 每一根K线对应的背景色块，value=1 配合 overlay 轴实现顶格
-                        highlightData.push({ time: item.time, value: 1, color: colors[q-1] });
-
-                        // 季度切换检测逻辑
-                        const prevMonth = index > 0 ? new Date(data[index-1].time * 1000).getUTCMonth() : -1;
-                        if (q !== (Math.floor(prevMonth / 3) + 1)) {
-                            quarterMarkers.push({
-                                time: item.time,
-                                position: 'aboveBar', // 标记在柱体上方，即屏幕最顶端
-                                color: '#ffffff',
-                                shape: 'text',
-                                text: 'Fucking Quater ' + q 
-                            });
-                        }
-                    });
-
-                
-                    mainSeries.setMarkers(indicators); 
-                    
-                    // highlightSeries.setData(highlightData);
-                    highlightSeries.setMarkers(quarterMarkers);
-
-                    chart.timeScale().fitContent();
- 
-                    window.addEventListener('resize', () => {
-                        chart.applyOptions({ width: container.clientWidth });
-                    });
-                })();
-              </script>
+          <div class="tradingview-widget-container__widget" 
+            style="
+              border: 1px solid #888;  
+              box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+              background: ${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'};
+            ">
+            <div id="symbol" style="font-size:16px; font-weight:bold; margin-bottom:5px; margin-top:10px; margin-left:10px; color: ${tradingViewData.theme == TradingViewTheme.light ? 'black' : 'white'};">
+              ${tradingViewData.symbol}
             </div>
-            
-          ''';
+
+            <div id="container" style="width:100%; height:250px;"></div>
+
+            <script src="${Constant.tradingLightChartWidgetUrl}"></script>
+            <script>
+              (function initFixedTopChart() {
+                const container = document.getElementById('container');
+                
+                const chartOptions = {
+                  layout: {
+                      textColor: '${(tradingViewData.theme == TradingViewTheme.light ? 'black' : 'white')}',
+                      background: { type: 'solid', color: '${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'}' }
+                  },
+                  grid: { 
+                      vertLines: { visible: false }, 
+                      horzLines: { visible: false } 
+                  },
+                  timeScale: {
+                      rightOffset: 10, 
+                      fixLeftEdge: true,
+                      fixRightEdge: true,
+                      barSpacing: 6, 
+                      minBarSpacing: 3,
+                      lockVisibleTimeRangeOnResize: false, 
+                  },
+                  rightPriceScale: {
+                      autoScale: true,
+                      alignLabels: true,
+                  },
+                  handleScroll: true,
+                  handleScale: true,
+                };
+
+                const chart = LightweightCharts.createChart(container, chartOptions);
+
+                const mainSeries = chart.addCandlestickSeries({
+                  upColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#ef5350' : '#26a69a'}',
+                  downColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#26a69a' : '#ef5350'}',
+                  borderVisible: false,
+                  wickUpColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#ef5350' : '#26a69a'}',
+                  wickDownColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#26a69a' : '#ef5350'}'
+                });
+
+                const highlightSeries = chart.addHistogramSeries({
+                  priceScaleId: 'overlay',
+                  lastValueVisible: false,
+                  priceLineVisible: false,
+                });
+
+                chart.priceScale('overlay').applyOptions({
+                  scaleMargins: { top: 0, bottom: 0 }, 
+                  visible: false,
+                });
+
+                const data = $chartDataJson;
+                const rawIndicators = $indicatorJson;
+                const indicators = rawIndicators.map(ind => {
+                  const d = new Date(ind.time);
+                  const dateStr = d.toISOString().split('T')[0];
+                  return {
+                    ...ind,
+                    time: dateStr
+                  };
+                });
+                const highlightData = [];
+                const quarterMarkers = [];
+
+                mainSeries.setData(data);
+
+                data.forEach((item, index) => {
+                  const date = new Date(item.time); 
+                  const month = date.getUTCMonth();
+                  const q = Math.floor(month / 3) + 1;
+                  
+                  const colors = [
+                    'rgba(33, 150, 243, 0.05)', 
+                    'rgba(76, 175, 80, 0.05)', 
+                    'rgba(255, 152, 0, 0.05)', 
+                    'rgba(156, 39, 176, 0.05)'
+                  ];
+                  
+                  highlightData.push({ time: item.time, value: 1, color: colors[q-1] });
+
+                  const prevDateStr = index > 0 ? data[index-1].time : null;
+                  const prevQ = prevDateStr ? Math.floor(new Date(prevDateStr).getUTCMonth() / 3) + 1 : -1;
+
+                  if (q !== prevQ) {
+                    quarterMarkers.push({
+                      time: item.time,
+                      position: 'aboveBar', 
+                      color: '${tradingViewData.theme == TradingViewTheme.light ? 'white' : 'black'}',
+                      shape: 'text',
+                      text: '${tradingViewData.locale == 'zh' ? '季度 ' : 'Q '}' + q,
+                      backgroundColor: '${tradingViewData.theme == TradingViewTheme.light ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)'}',
+                    });
+                  }
+                });
+
+                highlightSeries.setData(highlightData);
+
+                const allMarkers = [...indicators, ...quarterMarkers].sort((a, b) => {
+                  return new Date(a.time).getTime() - new Date(b.time).getTime();
+                });
+
+                mainSeries.setMarkers(allMarkers); 
+
+                setTimeout(() => {
+                  chart.timeScale().fitContent();
+                }, 100);
+
+                window.addEventListener('resize', () => {
+                  chart.applyOptions({ width: container.clientWidth });
+                  if (chart.timeScale().options().barSpacing > 15) {
+                    chart.timeScale().applyOptions({ barSpacing: 10 });
+                  }
+                  chart.timeScale().fitContent();
+                });
+              })();
+            </script>
+          </div>
+        ''';
       }
 
       return '''

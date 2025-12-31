@@ -46,6 +46,7 @@ class TradingViewEmbedder {
 
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..enableZoom(false)
       ..setBackgroundColor(
         tradingViewData.theme == TradingViewTheme.dark
             ? Colors.black

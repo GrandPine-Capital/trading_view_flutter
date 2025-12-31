@@ -39,7 +39,7 @@ class ChartIndicator {
       displayPosition: json['displayPosition'] as String?,
       color: json['color'] as String?,
       shape: json['shape'] as String?,
-      timestamp: json['timestamp'] as int?,
+      timestamp: json['time'] as int?,
       metadata: json['metadata'] as Map<String, Object?>,
     );
   }
