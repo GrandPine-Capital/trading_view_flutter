@@ -515,6 +515,41 @@ class _TradingViewExampleState extends State<TradingViewExample> {
       volume: fakeVolume,
     );
 
+    final tradingDataCandleWithImageAsIndicator = TradingViewData(
+      id: 2,
+      symbol: 'SZSE:002594',
+      autosize: true,
+      interval: TradingViewInterval.month,
+      timezone: 'Asia/Shanghai',
+      theme: theme,
+      style: '1',
+      locale: 'zh',
+      hideTopToolbar: true,
+      allowSymbolChange: false,
+      saveImage: false,
+      showCalendar: true,
+      hideVolume: false,
+      isLightWeightChart: true,
+      tradingViewChartType: TradingViewChartType.candlestick,
+      chartValue: fakeChartData,
+      chartRegion: region,
+      volume: fakeVolume,
+      indicatorImages: <ChartIndicatorImage>[
+        ChartIndicatorImage(
+          time: '2025-12-26',
+          price: 83.2,
+          imageSource:
+              'https://www.citypng.com/photo/11877/hd-circle-green-tick-mark-symbol-icon-png',
+        ),
+        ChartIndicatorImage(
+          time: '2025-12-28',
+          price: 92.4,
+          imageSource:
+              'https://www.citypng.com/photo/11877/hd-circle-green-tick-mark-symbol-icon-png',
+        ),
+      ],
+    );
+
     return Scaffold(
       backgroundColor: theme == TradingViewTheme.light
           ? Colors.white
@@ -758,6 +793,46 @@ class _TradingViewExampleState extends State<TradingViewExample> {
                           'trading_view_light_${theme.name}_${region.name}',
                         ),
                         data: tradingDataBar,
+                        width: 600,
+                        height: 300,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 30),
+            Container(
+              key: const ValueKey('light_bar_container'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      top: 8,
+                      bottom: 8,
+                    ),
+                    child: Text(
+                      '带图片指标的轻量级柱状图',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 300,
+                      child: TradingViewWidget(
+                        key: ValueKey(
+                          'trading_view_light_${theme.name}_${region.name}',
+                        ),
+                        data: tradingDataCandleWithImageAsIndicator,
                         width: 600,
                         height: 300,
                       ),

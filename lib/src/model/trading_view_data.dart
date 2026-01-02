@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:trading_view_flutter/src/model/chart_indicator.dart';
+import 'package:trading_view_flutter/src/model/chart_indicator_image.dart';
 import 'package:trading_view_flutter/src/model/chart_type.dart';
 import 'package:trading_view_flutter/src/model/chart_region.dart';
 import 'package:trading_view_flutter/src/config/constant.dart';
@@ -59,6 +60,7 @@ class TradingViewData {
   final List<TradingViewChartData>? chartValue;
   final List<ChartIndicator>? indicators;
   final List<ChartVolume>? volume;
+  final List<ChartIndicatorImage>? indicatorImages;
 
   TradingViewData({
     this.id,
@@ -83,7 +85,7 @@ class TradingViewData {
     this.chartValue = const [],
     this.indicators = const [],
     this.volume = const [],
-    s,
+    this.indicatorImages = const [],
   }) : assert(symbol.isNotEmpty, 'symbol 不能为空');
 
   factory TradingViewData.fromJson(Map<String, dynamic> json) {
@@ -143,6 +145,17 @@ class TradingViewData {
               throw FormatException('Invalid indicator format');
             }).toList()
           : null,
+      indicatorImages: json['indicatorImages'] != null
+          ? (json['indicatorImages'] as List<dynamic>).map((item) {
+              if (item is String) {
+                final Map<String, dynamic> decodedMap = jsonDecode(item);
+                return ChartIndicatorImage.fromJson(decodedMap);
+              } else if (item is Map<String, dynamic>) {
+                return ChartIndicatorImage.fromJson(item);
+              }
+              throw FormatException('Invalid indicator format');
+            }).toList()
+          : null,
     );
 
     return data;
@@ -196,7 +209,8 @@ class TradingViewData {
         tradingViewChartType: $tradingViewChartType,
         chartValue: $chartValue,
         indicators: $indicators,
-        volume: $volume
+        volume: $volume,
+        indicatorImages: $indicatorImages,
       }''';
   }
 }

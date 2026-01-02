@@ -22,4 +22,5 @@ enum ChartIndicatorType {
   sankey,
   heatmap,
   treemap3d,
+  image,
 }

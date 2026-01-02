@@ -30,9 +30,18 @@ class TradingViewJsInteropt {
         tradingViewData.volume?.map((item) => item.toJson()).toList() ?? [],
       );
 
+      final indicatorImagesJson = jsonEncode(
+        tradingViewData.indicatorImages
+                ?.map((item) => item.toJson())
+                .toList() ??
+            [],
+      );
+
       if (kDebugMode) {
         logger.d('chartValue: $chartDataJson');
         logger.d('indicators: $indicatorJson');
+        logger.d('volume: $volumeDataJson');
+        logger.d('indicatorImages: $indicatorImagesJson');
       }
 
       if (tradingViewData.tradingViewChartType == TradingViewChartType.bar) {
@@ -249,6 +258,16 @@ class TradingViewJsInteropt {
                 };
 
                 const chart = LightweightCharts.createChart(container, chartOptions);
+
+                ${(() {
+          if (indicatorImagesJson.isNotEmpty) {
+            return '''
+            let noteElemetns = [];
+            
+            
+            ''';
+          }
+        }())}
 
                 const mainSeries = chart.addCandlestickSeries({
                   upColor: '${tradingViewData.chartRegion == ChartRegion.china ? '#ef5350' : '#26a69a'}',
