@@ -57,7 +57,7 @@
 
 ```yaml
 dependencies:
-  trading_view_flutter: ^0.0.1
+  trading_view_flutter: ^0.0.6
   webview_flutter: ^4.4.0  # 必需依赖
   logger: ^2.0.0           # 可选，用于调试日志
 ```
@@ -515,7 +515,7 @@ class ChartIndicatorImage {
       'imageUrl': imageUrl,
       if (position != null) 'position': position,
       if (width != null) 'width': width,
-      if (height != null ')height': height,
+      if (height != null) 'height': height,
     };
   }
 }
