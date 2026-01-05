@@ -263,8 +263,42 @@ class TradingViewJsInteropt {
           if (indicatorImagesJson.isNotEmpty) {
             return '''
             let noteElemetns = [];
+            const serverImages = $indicatorImagesJson; 
             
-            
+            if (serverImages.length) {
+              noteElements = serverImages.map(function(image) {
+                const img = document.createElement('img');
+
+                img.src = image.url;
+                img.style.position = 'absolute';
+                img.style.width = '30px'; 
+                img.style.height = 'auto';
+                img.style.transform = 'translate(-50%, -100%)';
+                img.style.display = 'none';
+                overlayLayer.appendChild(img);
+                return { element: img, time: image.time, price: image.price };
+              })
+            } 
+
+            function updateOverlayPositions() {
+              if (!isImageEnabled) return;
+              
+              const timeScale = chart.timeScale();
+              const symbolHeaderHeight = document.getElementById('symbol').offsetHeight;
+
+              noteElements.forEach(item => {
+                const x = timeScale.timeToCoordinate(item.time);
+                const y = mainSeries.priceToCoordinate(item.price);
+                
+                if (x !== null && y !== null) {
+                  item.element.style.left = x + "px";
+                  item.element.style.top = (y + symbolHeaderHeight) + "px";
+                  item.element.style.display = "block";
+                } else {
+                  item.element.style.display = "none";
+                }
+              });
+            }
             ''';
           }
         }())}
