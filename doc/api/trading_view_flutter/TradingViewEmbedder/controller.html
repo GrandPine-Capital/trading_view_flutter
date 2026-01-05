@@ -53,23 +53,34 @@
 </h1></div>
 
     
-      <section class="multi-line-signature">
-        
-        <a href="https://pub.dev/documentation/webview_flutter/4.13.0/webview_flutter/WebViewController-class.html">WebViewController</a>
-        <span class="name ">controller</span>
-        <div class="features"><span class="feature">getter/setter pair</span></div>
-
-      </section>
-      
-
-      
-<section class="summary source-code" id="source">
-  <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">late WebViewController controller;</code></pre>
-</section>
-
 
     
+        
+  <section id="getter">
+    <section class="multi-line-signature">
+      
+      <span class="returntype"><a href="https://pub.dev/documentation/webview_flutter/4.13.0/webview_flutter/WebViewController-class.html">WebViewController</a></span>
+      get
+      <span class="name ">controller</span>
+      
+
+    </section>
+    
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">WebViewController get controller {
+  if (_controller == null) {
+    throw StateError(&#39;TradingViewEmbedderController 尚未初始化，请先调用 onLoad()。&#39;);
+  }
+  return _controller!;
+}</code></pre>
+</section>
+
+  </section>
+
+
 </div> <!-- /.main-content -->
 <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
   <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->

@@ -71,9 +71,12 @@
 <li><span class="parameter" id="-param-showComprehennsiveDetails"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">showComprehennsiveDetails</span> = <span class="default-value">false</span>, </span></li>
 <li><span class="parameter" id="-param-supportHost"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">supportHost</span> = <span class="default-value">Constant.tradingViewUrl</span>, </span></li>
 <li><span class="parameter" id="-param-isLightWeightChart"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">isLightWeightChart</span> = <span class="default-value">false</span>, </span></li>
-<li><span class="parameter" id="-param-chartRegion"><span class="type-annotation">ChartRegion?</span> <span class="parameter-name">chartRegion</span> = <span class="default-value">ChartRegion.china</span>, </span></li>
+<li><span class="parameter" id="-param-chartRegion"><span class="type-annotation"><a href="../../trading_view_flutter/ChartRegion.html">ChartRegion</a>?</span> <span class="parameter-name">chartRegion</span> = <span class="default-value">ChartRegion.china</span>, </span></li>
 <li><span class="parameter" id="-param-tradingViewChartType"><span class="type-annotation"><a href="../../trading_view_flutter/TradingViewChartType.html">TradingViewChartType</a>?</span> <span class="parameter-name">tradingViewChartType</span> = <span class="default-value">TradingViewChartType.candlestick</span>, </span></li>
-<li><span class="parameter" id="-param-chartValue"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../trading_view_flutter/TradingViewChartData-class.html">TradingViewChartData</a></span>&gt;</span>?</span> <span class="parameter-name">chartValue</span>, </span></li>
+<li><span class="parameter" id="-param-chartValue"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../trading_view_flutter/TradingViewChartData-class.html">TradingViewChartData</a></span>&gt;</span>?</span> <span class="parameter-name">chartValue</span> = <span class="default-value">const []</span>, </span></li>
+<li><span class="parameter" id="-param-indicators"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../trading_view_flutter/ChartIndicator-class.html">ChartIndicator</a></span>&gt;</span>?</span> <span class="parameter-name">indicators</span> = <span class="default-value">const []</span>, </span></li>
+<li><span class="parameter" id="-param-volume"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../trading_view_flutter/ChartVolume-class.html">ChartVolume</a></span>&gt;</span>?</span> <span class="parameter-name">volume</span> = <span class="default-value">const []</span>, </span></li>
+<li><span class="parameter" id="-param-indicatorImages"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../trading_view_flutter/ChartIndicatorImage-class.html">ChartIndicatorImage</a></span>&gt;</span>?</span> <span class="parameter-name">indicatorImages</span> = <span class="default-value">const []</span>, </span></li>
 </ol>})
     </section>
     
@@ -102,7 +105,10 @@
   this.isLightWeightChart = false,
   this.chartRegion = ChartRegion.china,
   this.tradingViewChartType = TradingViewChartType.candlestick,
-  this.chartValue,
+  this.chartValue = const [],
+  this.indicators = const [],
+  this.volume = const [],
+  this.indicatorImages = const [],
 }) : assert(symbol.isNotEmpty, &#39;symbol 不能为空&#39;);</code></pre>
 </section>
 

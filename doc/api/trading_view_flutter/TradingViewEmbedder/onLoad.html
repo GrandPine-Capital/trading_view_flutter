@@ -102,8 +102,9 @@ Future&lt;void&gt; onLoad({
     debugPrint(&#39;TradingViewWCode: $tradingViewWCode&#39;);
   }
 
-  controller = WebViewController()
+  _controller = WebViewController()
     ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..enableZoom(false)
     ..setBackgroundColor(
       tradingViewData.theme == TradingViewTheme.dark
           ? Colors.black
@@ -118,15 +119,7 @@ Future&lt;void&gt; onLoad({
         onNavigationRequest: onNavigationRequest,
       ),
     )
-    ..loadRequest(
-      Uri.parse(
-        Uri.dataFromString(
-          tradingViewWCode,
-          mimeType: &#39;text&#47;html&#39;,
-          encoding: Encoding.getByName(&#39;utf-8&#39;),
-        ).toString(),
-      ),
-    );
+    ..loadHtmlString(tradingViewWCode);
 }</code></pre>
 </section>
 

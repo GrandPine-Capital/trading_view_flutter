@@ -98,6 +98,39 @@
         : null,
     chartRegion: json[&#39;chartRegion&#39;],
     showDrawingToolBar: json[&#39;showDrawingToolBar&#39;],
+    indicators: json[&#39;indicators&#39;] != null
+        ? (json[&#39;indicators&#39;] as List&lt;dynamic&gt;).map((item) {
+            if (item is String) {
+              final Map&lt;String, dynamic&gt; decodedMap = jsonDecode(item);
+              return ChartIndicator.fromJson(decodedMap);
+            } else if (item is Map&lt;String, dynamic&gt;) {
+              return ChartIndicator.fromJson(item);
+            }
+            throw FormatException(&#39;Invalid indicator format&#39;);
+          }).toList()
+        : null,
+    volume: json[&#39;volume&#39;] != null
+        ? (json[&#39;volume&#39;] as List&lt;dynamic&gt;).map((item) {
+            if (item is String) {
+              final Map&lt;String, dynamic&gt; decodedMap = jsonDecode(item);
+              return ChartVolume.fromJson(decodedMap);
+            } else if (item is Map&lt;String, dynamic&gt;) {
+              return ChartVolume.fromJson(item);
+            }
+            throw FormatException(&#39;Invalid indicator format&#39;);
+          }).toList()
+        : null,
+    indicatorImages: json[&#39;indicatorImages&#39;] != null
+        ? (json[&#39;indicatorImages&#39;] as List&lt;dynamic&gt;).map((item) {
+            if (item is String) {
+              final Map&lt;String, dynamic&gt; decodedMap = jsonDecode(item);
+              return ChartIndicatorImage.fromJson(decodedMap);
+            } else if (item is Map&lt;String, dynamic&gt;) {
+              return ChartIndicatorImage.fromJson(item);
+            }
+            throw FormatException(&#39;Invalid indicator format&#39;);
+          }).toList()
+        : null,
   );
 
   return data;

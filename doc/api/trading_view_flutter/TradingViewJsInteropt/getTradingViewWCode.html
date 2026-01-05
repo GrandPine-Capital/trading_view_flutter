@@ -85,71 +85,405 @@
       tradingViewData.chartValue?.map((item) =&gt; item.toJson()).toList() ?? [],
     );
 
-    if (kDebugMode) logger.d(&#39;chartValue: $chartDataJson&#39;);
+    final indicatorJson = jsonEncode(
+      tradingViewData.indicators?.map((item) =&gt; item.toJson()).toList() ?? [],
+    );
 
-    if (tradingViewData.tradingViewChartType ==
-        TradingViewChartType.candlestick) {
+    final volumeDataJson = jsonEncode(
+      tradingViewData.volume?.map((item) =&gt; item.toJson()).toList() ?? [],
+    );
+
+    final indicatorImagesJson = jsonEncode(
+      tradingViewData.indicatorImages
+              ?.map((item) =&gt; item.toJson())
+              .toList() ??
+          [],
+    );
+
+    if (kDebugMode) {
+      logger.d(&#39;chartValue: $chartDataJson&#39;);
+      logger.d(&#39;indicators: $indicatorJson&#39;);
+      logger.d(&#39;volume: $volumeDataJson&#39;);
+      logger.d(&#39;indicatorImages: $indicatorImagesJson&#39;);
+    }
+
+    if (tradingViewData.tradingViewChartType == TradingViewChartType.bar) {
       return &#39;&#39;&#39;
-        &lt;div
-        class=&quot;tradingview-widget-container__widget&quot;
+        &lt;div class=&quot;tradingview-widget-container__widget&quot;
           style=&quot;
-            border:  1px solid #888;
+            border: 1px solid #888;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             background: ${tradingViewData.theme == TradingViewTheme.light ? &#39;white&#39; : &#39;black&#39;};
           &quot;&gt;
-          &lt;div id=&quot;symbol&quot; style=&quot;font-size:16px; font-weight:bold; margin-bottom:4px;&quot;&gt;
+          &lt;div id=&quot;symbol&quot; style=&quot;font-size:16px; font-weight:bold; margin-bottom:5px; margin-top:10px; margin-left:10px; color: ${tradingViewData.theme == TradingViewTheme.light ? &#39;black&#39; : &#39;white&#39;};&quot;&gt;
             ${tradingViewData.symbol}
           &lt;&#47;div&gt;
 
           &lt;div id=&quot;container&quot; style=&quot;width:100%; height:250px;&quot;&gt;&lt;&#47;div&gt;
 
+          &lt;script src=&quot;${Constant.tradingLightChartWidgetUrl}&quot;&gt;&lt;&#47;script&gt;
           &lt;script&gt;
-            (function() {
-              var script = document.createElement(&#39;script&#39;);
+            (function initFixedTopChart() {
+              const container = document.getElementById(&#39;container&#39;);
 
-              script.src = &#39;${Constant.tradingLightChartWidgetUrl}&#39;;1
-              script.onload = function() {
-                var checkReady = setInterval(function() {
-
-                  if (window.LightweightCharts) {
-                    clearInterval(checkReady);
-
-                    const chartOptions = {
-                      layout: {
-                        textColor: &#39;${(tradingViewData.theme == TradingViewTheme.light ? &#39;black&#39; : &#39;white&#39;)}&#39;,
-                        background: { type: &#39;solid&#39;, color: &#39; ${tradingViewData.theme == TradingViewTheme.light ? &#39;white&#39; : &#39;black&#39;}&#39; }
-                      }
-                    };
-
-                    const chart = LightweightCharts.createChart(
-                      document.getElementById(&#39;container&#39;),
-                      chartOptions
-                    );
-
-                    const candlestickSeries = chart.addCandlestickSeries({
-                      upColor: &#39;${tradingViewData.chartRegion == ChartRegion.china ? &#39;#ef5350&#39; : &#39;#26a69a&#39;}&#39;,
-                      downColor: &#39;${tradingViewData.chartRegion == ChartRegion.china ? &#39;#26a69a&#39; : &#39;#ef5350&#39;}&#39;,
-                      borderVisible: false,
-                      wickUpColor: &#39;${tradingViewData.chartRegion == ChartRegion.china ? &#39;#ef5350&#39; : &#39;#26a69a&#39;}&#39;,
-                      wickDownColor: &#39;${tradingViewData.chartRegion == ChartRegion.china ? &#39;#26a69a&#39; : &#39;#ef5350&#39;}&#39;
-                    });
-
-                    candlestickSeries.setData($chartDataJson);
-
-                    chart.timeScale().fitContent();
-                  }
-                }, 50);
+              const chartOptions = {
+                layout: {
+                  textColor: &#39;${(tradingViewData.theme == TradingViewTheme.light ? &#39;black&#39; : &#39;white&#39;)}&#39;,
+                  background: { type: &#39;solid&#39;, color: &#39;${tradingViewData.theme == TradingViewTheme.light ? &#39;white&#39; : &#39;black&#39;}&#39; }
+                },
+                grid: {
+                  vertLines: { visible: false },
+                  horzLines: { visible: false }
+                },
+                timeScale: {
+                  shiftVisibleRangeOnNewBar: true,
+                  barSpacing: 12,
+                  minBarSpacing: 5,
+                  fixLeftEdge: false,
+                  fixRightEdge: true,
+                  uniformDistribution: true,
+                },
+                rightPriceScale: {
+                  autoScale: true,
+                  alignLabels: true,
+                  scaleMargins: {
+                    top: 0.1,
+                    bottom: 0.3,
+                  },
+                },
+                handleScroll: {
+                  mouseWheel: true,
+                  pressedMouseMove: true,
+                  horzTouchDrag: true,
+                  vertTouchDrag: true,
+                },
+                handleScale: {
+                  axisPressedMouseMove: true,
+                  mouseWheel: true,
+                  pinch: true,
+                },
               };
 
-              document.head.appendChild(script);
+              const chart = LightweightCharts.createChart(container, chartOptions);
+
+              const mainSeries = chart.addBarSeries({
+                upColor: &#39;${tradingViewData.chartRegion == ChartRegion.china ? &#39;#ef5350&#39; : &#39;#26a69a&#39;}&#39;,
+                downColor: &#39;${tradingViewData.chartRegion == ChartRegion.china ? &#39;#26a69a&#39; : &#39;#ef5350&#39;}&#39;,
+                thinBars: false
+              });
+
+              const volumeSeries = chart.addHistogramSeries({
+                priceScaleId: &#39;volume&#39;,
+                priceFormat: { type: &#39;volume&#39; },
+              });
+
+              chart.priceScale(&#39;volume&#39;).applyOptions({
+                scaleMargins: { top: 0.8, bottom: 0 },
+                visible: false,
+              });
+
+              const highlightSeries = chart.addHistogramSeries({
+                priceScaleId: &#39;overlay&#39;,
+                lastValueVisible: false,
+                priceLineVisible: false,
+              });
+
+              chart.priceScale(&#39;overlay&#39;).applyOptions({
+                scaleMargins: { top: 0, bottom: 0 },
+                visible: false,
+              });
+
+              const data = $chartDataJson;
+              const volumeRaw = $volumeDataJson;
+              const rawIndicators = $indicatorJson;
+
+              const indicators = rawIndicators.map(ind =&gt; {
+                const d = new Date(ind.time);
+                return {
+                  ...ind,
+                  time: d.toISOString().split(&#39;T&#39;)[0]
+                };
+              });
+
+              const volumeData = volumeRaw.map(item =&gt; ({
+                time: new Date(item.time).toISOString().split(&#39;T&#39;)[0],
+                value: item.volume,
+                color: item.color || &#39;rgba(38, 166, 154, 0.5)&#39;,
+              }));
+
+              const highlightData = [];
+              const quarterMarkers = [];
+
+              mainSeries.setData(data);
+              volumeSeries.setData(volumeData);
+
+              data.forEach((item, index) =&gt; {
+                const date = new Date(item.time);
+                const month = date.getUTCMonth();
+                const q = Math.floor(month &#47; 3) + 1;
+
+                const colors = [
+                  &#39;rgba(33, 150, 243, 0.05)&#39;,
+                  &#39;rgba(76, 175, 80, 0.05)&#39;,
+                  &#39;rgba(255, 152, 0, 0.05)&#39;,
+                  &#39;rgba(156, 39, 176, 0.05)&#39;
+                ];
+
+                highlightData.push({ time: item.time, value: 1, color: colors[q-1] });
+
+                const prevDateStr = index &gt; 0 ? data[index-1].time : null;
+                const prevQ = prevDateStr ? Math.floor(new Date(prevDateStr).getUTCMonth() &#47; 3) + 1 : -1;
+
+                if (q !== prevQ) {
+                  quarterMarkers.push({
+                    time: item.time,
+                    position: &#39;aboveBar&#39;,
+                    color: &#39;${tradingViewData.theme == TradingViewTheme.light ? &#39;#666&#39; : &#39;#ccc&#39;}&#39;,
+                    shape: &#39;text&#39;,
+                    text: &#39;${tradingViewData.locale == &#39;zh&#39; ? &#39;季度 &#39; : &#39;Q &#39;}&#39; + q,
+                    backgroundColor: &#39;${tradingViewData.theme == TradingViewTheme.light ? &#39;rgba(0,0,0,0.1)&#39; : &#39;rgba(255,255,255,0.1)&#39;}&#39;,
+                  });
+                }
+              });
+
+              highlightSeries.setData(highlightData);
+
+              const allMarkers = [...indicators, ...quarterMarkers].sort((a, b) =&gt; {
+                return new Date(a.time).getTime() - new Date(b.time).getTime();
+              });
+
+              mainSeries.setMarkers(allMarkers);
+
+              setTimeout(() =&gt; {
+                chart.timeScale().fitContent();
+              }, 150);
+
+              window.addEventListener(&#39;resize&#39;, () =&gt; {
+                chart.applyOptions({ width: container.clientWidth });
+                chart.timeScale().fitContent();
+              });
             })();
           &lt;&#47;script&gt;
         &lt;&#47;div&gt;
-        &#39;&#39;&#39;;
+      &#39;&#39;&#39;;
+    } else if (tradingViewData.tradingViewChartType ==
+        TradingViewChartType.candlestick) {
+      return &#39;&#39;&#39;
+        &lt;div class=&quot;tradingview-widget-container__widget&quot;
+          style=&quot;
+            border: 1px solid #888;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            background: ${tradingViewData.theme == TradingViewTheme.light ? &#39;white&#39; : &#39;black&#39;};
+          &quot;&gt;
+          &lt;div id=&quot;symbol&quot; style=&quot;font-size:16px; font-weight:bold; margin-bottom:5px; margin-top:10px; margin-left:10px; color: ${tradingViewData.theme == TradingViewTheme.light ? &#39;black&#39; : &#39;white&#39;};&quot;&gt;
+            ${tradingViewData.symbol}
+          &lt;&#47;div&gt;
+
+          &lt;div id=&quot;container&quot; style=&quot;width:100%; height:250px;&quot;&gt;&lt;&#47;div&gt;
+
+          &lt;script src=&quot;${Constant.tradingLightChartWidgetUrl}&quot;&gt;&lt;&#47;script&gt;
+          &lt;script&gt;
+            (function initFixedTopChart() {
+              const container = document.getElementById(&#39;container&#39;);
+
+              const chartOptions = {
+                layout: {
+                    textColor: &#39;${(tradingViewData.theme == TradingViewTheme.light ? &#39;black&#39; : &#39;white&#39;)}&#39;,
+                    background: { type: &#39;solid&#39;, color: &#39;${tradingViewData.theme == TradingViewTheme.light ? &#39;white&#39; : &#39;black&#39;}&#39; }
+                },
+                grid: {
+                    vertLines: { visible: false },
+                    horzLines: { visible: false }
+                },
+                timeScale: {
+                  shiftVisibleRangeOnNewBar: true,
+                  barSpacing: 12,
+                  minBarSpacing: 5,
+                  fixLeftEdge: false,
+                  fixRightEdge: true,
+                  uniformDistribution: true,
+                },
+                rightPriceScale: {
+                    autoScale: true,
+                    alignLabels: true,
+                },
+                handleScroll: {
+                  mouseWheel: true,
+                  pressedMouseMove: true,
+                  horzTouchDrag: true,
+                  vertTouchDrag: true,
+                },
+                handleScale: {
+                  axisPressedMouseMove: true,
+                  mouseWheel: true,
+                  pinch: true,
+                },
+              };
+
+              const chart = LightweightCharts.createChart(container, chartOptions);
+
+              ${(() {
+        if (indicatorImagesJson.isNotEmpty) {
+          return &#39;&#39;&#39;
+          let noteElemetns = [];
+          const serverImages = $indicatorImagesJson;
+
+          if (serverImages.length) {
+            noteElements = serverImages.map(function(image) {
+              const img = document.createElement(&#39;img&#39;);
+
+              img.src = image.url;
+              img.style.position = &#39;absolute&#39;;
+              img.style.width = &#39;30px&#39;;
+              img.style.height = &#39;auto&#39;;
+              img.style.transform = &#39;translate(-50%, -100%)&#39;;
+              img.style.display = &#39;none&#39;;
+              overlayLayer.appendChild(img);
+              return { element: img, time: image.time, price: image.price };
+            })
+          }
+
+          function updateOverlayPositions() {
+            if (!isImageEnabled) return;
+
+            const timeScale = chart.timeScale();
+            const symbolHeaderHeight = document.getElementById(&#39;symbol&#39;).offsetHeight;
+
+            noteElements.forEach(item =&gt; {
+              const x = timeScale.timeToCoordinate(item.time);
+              const y = mainSeries.priceToCoordinate(item.price);
+
+              if (x !== null &amp;&amp; y !== null) {
+                item.element.style.left = x + &quot;px&quot;;
+                item.element.style.top = (y + symbolHeaderHeight) + &quot;px&quot;;
+                item.element.style.display = &quot;block&quot;;
+              } else {
+                item.element.style.display = &quot;none&quot;;
+              }
+            });
+          }
+          &#39;&#39;&#39;;
+        }
+      }())}
+
+              const mainSeries = chart.addCandlestickSeries({
+                upColor: &#39;${tradingViewData.chartRegion == ChartRegion.china ? &#39;#ef5350&#39; : &#39;#26a69a&#39;}&#39;,
+                downColor: &#39;${tradingViewData.chartRegion == ChartRegion.china ? &#39;#26a69a&#39; : &#39;#ef5350&#39;}&#39;,
+                borderVisible: false,
+                wickUpColor: &#39;${tradingViewData.chartRegion == ChartRegion.china ? &#39;#ef5350&#39; : &#39;#26a69a&#39;}&#39;,
+                wickDownColor: &#39;${tradingViewData.chartRegion == ChartRegion.china ? &#39;#26a69a&#39; : &#39;#ef5350&#39;}&#39;
+              });
+
+              const highlightSeries = chart.addHistogramSeries({
+                priceScaleId: &#39;overlay&#39;,
+                lastValueVisible: false,
+                priceLineVisible: false,
+              });
+
+              const volumeSeries = chart.addHistogramSeries({
+                priceScaleId: &#39;volume&#39;,
+                priceFormat: { type: &#39;volume&#39; },
+              });
+
+              chart.priceScale(&#39;volume&#39;).applyOptions({
+                scaleMargins: { top: 0.7, bottom: 0 },
+                visible: false,
+              });
+
+              chart.priceScale(&#39;overlay&#39;).applyOptions({
+                scaleMargins: { top: 0.1, bottom: 0 },
+                visible: false,
+              });
+
+              const data = $chartDataJson;
+              const volumeRaw = $volumeDataJson;
+              const rawIndicators = $indicatorJson;
+              const indicators = rawIndicators.map(ind =&gt; {
+                const d = new Date(ind.time);
+                const dateStr = d.toISOString().split(&#39;T&#39;)[0];
+                return {
+                  ...ind,
+                  time: dateStr
+                };
+              });
+              const volumeData = volumeRaw.map(item =&gt; ({
+                time: new Date(item.time).toISOString().split(&#39;T&#39;)[0],
+                value: item.volume,
+                color: item.color,
+              }));
+
+              const highlightData = [];
+              const quarterMarkers = [];
+
+              mainSeries.setData(data);
+              volumeSeries.setData(volumeData);
+
+              data.forEach((item, index) =&gt; {
+                const date = new Date(item.time);
+                const month = date.getUTCMonth();
+                const q = Math.floor(month &#47; 3) + 1;
+
+                const colors = [
+                  &#39;rgba(33, 150, 243, 0.05)&#39;,
+                  &#39;rgba(76, 175, 80, 0.05)&#39;,
+                  &#39;rgba(255, 152, 0, 0.05)&#39;,
+                  &#39;rgba(156, 39, 176, 0.05)&#39;
+                ];
+
+                highlightData.push({ time: item.time, value: 1, color: colors[q-1] });
+
+                const prevDateStr = index &gt; 0 ? data[index-1].time : null;
+                const prevQ = prevDateStr ? Math.floor(new Date(prevDateStr).getUTCMonth() &#47; 3) + 1 : -1;
+
+                if (q !== prevQ) {
+                  quarterMarkers.push({
+                    time: item.time,
+                    position: &#39;aboveBar&#39;,
+                    color: &#39;${tradingViewData.theme == TradingViewTheme.light ? &#39;#666&#39; : &#39;#ccc&#39;}&#39;,
+                    shape: &#39;text&#39;,
+                    text: &#39;${tradingViewData.locale == &#39;zh&#39; ? &#39;季度 &#39; : &#39;Q &#39;}&#39; + q,
+                    backgroundColor: &#39;${tradingViewData.theme == TradingViewTheme.light ? &#39;rgba(0,0,0,0.1)&#39; : &#39;rgba(255,255,255,0.1)&#39;}&#39;,
+                  });
+                }
+              });
+
+              highlightSeries.setData(highlightData);
+
+              const allMarkers = [...indicators, ...quarterMarkers].sort((a, b) =&gt; {
+                return new Date(a.time).getTime() - new Date(b.time).getTime();
+              });
+
+              mainSeries.setMarkers(allMarkers);
+
+              setTimeout(() =&gt; {
+                chart.timeScale().fitContent();
+              }, 100);
+
+              window.addEventListener(&#39;resize&#39;, () =&gt; {
+                chart.applyOptions({ width: container.clientWidth });
+                if (chart.timeScale().options().barSpacing &gt; 15) {
+                  chart.timeScale().applyOptions({ barSpacing: 10 });
+                }
+                chart.timeScale().fitContent();
+              });
+            })();
+          &lt;&#47;script&gt;
+        &lt;&#47;div&gt;
+      &#39;&#39;&#39;;
     }
 
     return &#39;&#39;&#39;
-        &lt;p&gt;unknown&lt;&#47;p&gt;
+        &lt;div style=&quot;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          height:250px;
+          font-size:18px;
+          color:#999;
+          background:#f7f7f7;
+          border-radius:8px;&quot;&gt;
+          &lt;span&gt;🌈 图表类型暂不支持，敬请期待&lt;&#47;span&gt;
+        &lt;&#47;div&gt;
     &#39;&#39;&#39;;
   } else {
     return &#39;&#39;&#39;

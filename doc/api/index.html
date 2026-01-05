@@ -128,33 +128,46 @@
 │   ├── config/
 │   │   └── constant.dart             # 常量定义，包含 TradingView URL 等配置
 │   ├── extensions/
-│   │   └── date_fromatter.dart       # 日期格式化扩展，提供 DateTime 格式化功能
+│   │   ├── date_fromatter.dart       # 日期格式化扩展，提供 DateTime 格式化功能
+│   │   └── trading_view_theme.dart   # 主题枚举扩展，提供主题解析功能
 │   ├── model/
+│   │   ├── chart_indicator.dart      # 图表指标数据模型，支持自定义指标和标记
+│   │   ├── chart_indicator_image.dart # 图表指标图片模型，支持在图表上显示图片标记
+│   │   ├── chart_indicator_type.dart # 图表指标类型枚举，支持多种指标类型
 │   │   ├── chart_region.dart         # 图表区域枚举（global/china）
 │   │   ├── chart_type.dart           # 图表类型枚举（area/bar/baseline/candlestick/line）
 │   │   ├── chart_value.dart          # 基础图表数值模型
+│   │   ├── chart_volume.dart         # 成交量数据模型，用于成交量指标
+│   │   ├── indicator_shape.dart      # 指标形状枚举（circle/square/arrowUp等）
 │   │   ├── interval.dart             # 时间间隔常量类（1分钟到月线）
 │   │   ├── theme.dart                # 主题枚举（light/dark）
 │   │   ├── trading_locale.dart       # 语言环境枚举及扩展
 │   │   ├── trading_view_chart_data.dart # K线数据模型（open/high/low/close/time）
 │   │   └── trading_view_data.dart    # 核心配置模型，包含所有图表参数
+│   ├── trading_view_calculation.dart # 图表计算工具类，提供基础计算功能
 │   ├── trading_view_embedder.dart    # WebView 嵌入器，管理 WebView 生命周期和事件
 │   ├── trading_view_js_interopt.dart # JavaScript 交互层，生成 HTML 和 JS 代码
 │   ├── trading_view_light_chart.dart # 轻量级图表组件
-│   └── trading_view_widget.dart      # 主 TradingView Flutter Widget
+│   ├── trading_view_widget.dart      # 主 TradingView Flutter Widget
+│   └── web_initializer.dart          # Web 平台初始化器，确保 Web 环境正确配置
 └── trading_view_flutter.dart         # 库入口文件，导出所有公共 API
 </code></pre>
 <h3 id="-7">模块功能详解</h3>
 <h4 id="libsrcmodel-"><code>lib/src/model</code> 目录</h4>
 <p>这个目录包含了所有与 TradingView 图表数据和配置相关的模型定义。它们是配置图表行为和外观的基础。</p>
 <ul>
-<li><strong><code>trading_view_data.dart</code></strong>: 最重要的配置类，封装了所有用于初始化 TradingView 图表的参数，例如交易品种、时间间隔、主题、语言等。</li>
+<li><strong><code>trading_view_data.dart</code></strong>: 最重要的配置类，封装了所有用于初始化 TradingView 图表的参数，例如交易品种、时间间隔、主题、语言等。新增了 <code>indicators</code>、<code>volume</code> 和 <code>indicatorImages</code> 字段，支持自定义指标和成交量数据。</li>
 <li><strong><code>trading_view_chart_data.dart</code></strong>: K线数据模型，包含开盘价、最高价、最低价、收盘价和时间戳，用于轻量级图表的数据展示。</li>
 <li><strong><code>interval.dart</code></strong>: 时间间隔常量类，提供从1分钟到月线的所有标准时间周期。</li>
 <li><strong><code>theme.dart</code></strong>: 图表主题枚举，支持亮色和暗色两种主题。</li>
 <li><strong><code>trading_locale.dart</code></strong>: 语言环境枚举（中文/英文）及对应的本地化字符串转换扩展。</li>
 <li><strong><code>chart_region.dart</code></strong>: 图表区域枚举，用于区分中国和全球市场的不同配色方案。</li>
 <li><strong><code>chart_type.dart</code></strong>: 图表类型枚举，支持多种图表展示形式。</li>
+<li><strong><code>chart_indicator.dart</code></strong>: 图表指标数据模型，用于在 TradingView 图表上显示自定义指标和标记，支持位置、颜色、文本等属性的配置。</li>
+<li><strong><code>chart_indicator_image.dart</code></strong>: 图表指标图片模型，允许在图表特定位置显示图片标记，支持 Base64 或 CDN 图片源。</li>
+<li><strong><code>chart_indicator_type.dart</code></strong>: 图表指标类型枚举，定义了多种指标类型（点、线、区域、柱状图、蜡烛图等）。</li>
+<li><strong><code>chart_volume.dart</code></strong>: 成交量数据模型，用于表示成交量指标数据，包含成交量、时间和颜色信息。</li>
+<li><strong><code>indicator_shape.dart</code></strong>: 指标形状枚举，定义了指标标记的形状（圆形、方形、向上箭头、向下箭头、文本）。</li>
 </ul>
 <h4 id="libsrctrading_view_widgetdart"><code>lib/src/trading_view_widget.dart</code></h4>
 <p>这是库的主要 UI 组件。通过 <code>TradingViewWidget</code> 可以在 Flutter 应用中嵌入完整的 TradingView 图表，支持所有配置选项。</p>
@@ -164,6 +177,10 @@
 <p><code>TradingViewEmbedder</code> 类负责管理底层 <code>webview_flutter</code> 的逻辑，包括 WebView 生命周期管理、页面加载回调处理等。</p>
 <h4 id="libsrctrading_view_js_interoptdart"><code>lib/src/trading_view_js_interopt.dart</code></h4>
 <p><code>TradingViewJsInteropt</code> 类是 Flutter 与 WebView 中 TradingView JavaScript 代码进行通信的桥梁，负责生成初始化图表所需的 HTML 和 JavaScript 代码。</p>
+<h4 id="libsrctrading_view_calculationdart"><code>lib/src/trading_view_calculation.dart</code></h4>
+<p><code>TradingViewCalculation</code> 类提供基础的图表计算功能，例如成交量计算等工具方法。</p>
+<h4 id="libsrcweb_initializerdart"><code>lib/src/web_initializer.dart</code></h4>
+<p><code>WebInitializer</code> 类用于 Web 平台的初始化，确保在 Web 环境下正确配置 <code>webview_flutter_web</code> 平台。</p>
 <h4 id="libtrading_view_flutterdart"><code>lib/trading_view_flutter.dart</code></h4>
 <p>整个库的入口文件，导出了所有外部可以访问的类和函数，简化了导入过程。</p>
 <h3 id="-8">依赖关系和兼容性</h3>
@@ -291,7 +308,7 @@ class LightChartExample extends StatelessWidget {
 </ul>
 <h3 id="-12">核心数据模型</h3>
 <h4 id="tradingviewdata-">TradingViewData 配置类</h4>
-<p><code>TradingViewData</code> 是配置 TradingView 图表的核心类，包含所有可定制的图表参数。</p>
+<p><code>TradingViewData</code> 是配置 TradingView 图表的核心类，包含所有可定制的图表参数。新增了对自定义指标、成交量数据和图片标记的支持。</p>
 <h5 id="-13">构造函数</h5>
 <pre class="language-dart"><code class="language-dart">TradingViewData({
   this.id,
@@ -314,6 +331,9 @@ class LightChartExample extends StatelessWidget {
   this.chartRegion = ChartRegion.china,
   this.tradingViewChartType = TradingViewChartType.candlestick,
   this.chartValue,
+  this.indicators = const [],
+  this.volume = const [],
+  this.indicatorImages = const [],
 }) : assert(symbol.isNotEmpty, 'symbol 不能为空');
 </code></pre>
 <h5 id="-14">属性说明</h5>
@@ -468,6 +488,27 @@ class LightChartExample extends StatelessWidget {
 <td><code>null</code></td>
 <td>轻量级图表的数据源</td>
 </tr>
+<tr>
+<td><code>indicators</code></td>
+<td><code>List&lt;ChartIndicator&gt;?</code></td>
+<td>❌</td>
+<td><code>[]</code></td>
+<td>自定义指标列表，支持在图表上显示自定义标记</td>
+</tr>
+<tr>
+<td><code>volume</code></td>
+<td><code>List&lt;ChartVolume&gt;?</code></td>
+<td>❌</td>
+<td><code>[]</code></td>
+<td>成交量数据列表，用于显示成交量指标</td>
+</tr>
+<tr>
+<td><code>indicatorImages</code></td>
+<td><code>List&lt;ChartIndicatorImage&gt;?</code></td>
+<td>❌</td>
+<td><code>[]</code></td>
+<td>图片标记列表，支持在图表上显示图片标记</td>
+</tr>
 </tbody>
 </table>
 <h4 id="tradingviewchartdata-k">TradingViewChartData K线数据模型</h4>
@@ -486,6 +527,167 @@ class LightChartExample extends StatelessWidget {
     required this.close,
     required this.time,
   });
+}
+
+#### ChartIndicator 自定义指标模型
+
+用于在 TradingView 图表上显示自定义指标和标记，支持文本、形状、颜色、位置等多种属性的配置。
+
+```dart
+class ChartIndicator {
+  final int? id;                        // 指标唯一标识符
+  final String? text;                   // 显示的文本内容
+  final String? displayPosition;        // 显示位置：'aboveBar', 'belowBar', 'inBar'
+  final String? color;                  // 指标颜色，支持十六进制颜色码
+  final String? shape;                  // 指标形状，使用 IndicatorShape 枚举
+  final int? timestamp;                 // 时间戳（毫秒）
+  final Map&lt;String, Object?&gt; metadata;  // 附加元数据
+
+  ChartIndicator({
+    this.id,
+    this.text,
+    this.displayPosition = 'belowBar',
+    this.shape = 'circle',
+    this.color,
+    this.timestamp,
+    this.metadata = const {},
+  });
+
+  factory ChartIndicator.fromJson(Map&lt;String, dynamic&gt; json) {
+    return ChartIndicator(
+      id: json['id'] as int?,
+      text: json['text'] as String?,
+      displayPosition: json['displayPosition'] as String? ?? 'belowBar',
+      color: json['color'] as String?,
+      shape: json['shape'] as String? ?? 'circle',
+      timestamp: json['timestamp'] as int?,
+      metadata: json['metadata'] != null
+          ? Map&lt;String, Object?&gt;.from(json['metadata'] as Map)
+          : const {},
+    );
+  }
+
+  Map&lt;String, dynamic&gt; toJson() {
+    return {
+      if (id != null) 'id': id,
+      if (text != null) 'text': text,
+      if (displayPosition != null) 'displayPosition': displayPosition,
+      if (color != null) 'color': color,
+      if (shape != null) 'shape': shape,
+      if (timestamp != null) 'timestamp': timestamp,
+      'metadata': metadata,
+    };
+  }
+}
+</code></pre>
+<h4 id="chartvolume-">ChartVolume 成交量数据模型</h4>
+<p>用于存储和显示成交量数据，支持与K线数据同步显示。</p>
+<pre class="language-dart"><code class="language-dart">class ChartVolume {
+  final DateTime time;       // 时间戳
+  final double value;        // 成交量值
+  final String? color;       // 成交量柱颜色（可选）
+
+  ChartVolume({
+    required this.time,
+    required this.value,
+    this.color,
+  });
+
+  factory ChartVolume.fromJson(Map&lt;String, dynamic&gt; json) {
+    return ChartVolume(
+      time: DateTime.parse(json['time'] as String),
+      value: (json['value'] as num).toDouble(),
+      color: json['color'] as String?,
+    );
+  }
+
+  Map&lt;String, dynamic&gt; toJson() {
+    return {
+      'time': time.toIso8601String(),
+      'value': value,
+      if (color != null) 'color': color,
+    };
+  }
+}
+</code></pre>
+<h4 id="chartindicatorimage-">ChartIndicatorImage 图片标记模型</h4>
+<p>支持在图表上显示图片标记，用于特殊事件的视觉提示。</p>
+<pre class="language-dart"><code class="language-dart">class ChartIndicatorImage {
+  final DateTime time;       // 时间戳
+  final String imageUrl;     // 图片URL地址
+  final String? position;    // 显示位置：'aboveBar', 'belowBar'（默认）
+  final double? width;       // 图片宽度（像素）
+  final double? height;      // 图片高度（像素）
+
+  ChartIndicatorImage({
+    required this.time,
+    required this.imageUrl,
+    this.position = 'belowBar',
+    this.width,
+    this.height,
+  });
+
+  factory ChartIndicatorImage.fromJson(Map&lt;String, dynamic&gt; json) {
+    return ChartIndicatorImage(
+      time: DateTime.parse(json['time'] as String),
+      imageUrl: json['imageUrl'] as String,
+      position: json['position'] as String? ?? 'belowBar',
+      width: json['width'] != null ? (json['width'] as num).toDouble() : null,
+      height: json['height'] != null ? (json['height'] as num).toDouble() : null,
+    );
+  }
+
+  Map&lt;String, dynamic&gt; toJson() {
+    return {
+      'time': time.toIso8601String(),
+      'imageUrl': imageUrl,
+      if (position != null) 'position': position,
+      if (width != null) 'width': width,
+      if (height != null ')height': height,
+    };
+  }
+}
+</code></pre>
+<h4 id="chartindicatortype-">ChartIndicatorType 图表指示器类型枚举</h4>
+<p>定义了24种图表指示器类型，用于控制图表上标记的显示样式。</p>
+<pre class="language-dart"><code class="language-dart">enum ChartIndicatorType {
+  dot,        // 点状标记
+  line,       // 线状标记
+  highlight,  // 高亮标记
+  bar,        // 条形标记
+  area,       // 面积标记
+  candle,     // 蜡烛图标记
+  scatter,    // 散点标记
+  bubble,     // 气泡标记
+  boxplot,    // 箱线图标记
+  histogram,  // 直方图标记
+  errorbar,   // 误差线标记
+  waterfall,  // 瀑布图标记
+  polygon,    // 多边形标记
+  venn,       // 韦恩图标记
+  gauge,      // 仪表盘标记
+  treemap,    // 树状图标记
+  sunburst,   // 旭日图标记
+  pyramid,    // 金字塔图标记
+  funnel,     // 漏斗图标记
+  gauge3d,    // 3D仪表盘标记
+  sankey,     // 桑基图标记
+  heatmap,    // 热力图标记
+  treemap3d,  // 3D树状图标记
+  image,      // 图片标记
+}
+</code></pre>
+<h4 id="indicatorshape-">IndicatorShape 指标形状枚举</h4>
+<p>定义了5种指标形状，用于自定义标记的视觉样式。</p>
+<pre class="language-dart"><code class="language-dart">enum IndicatorShape {
+  circle('circle'),     // 圆形
+  square('square'),     // 正方形
+  triangleUp('triangleUp'),   // 向上三角形
+  triangleDown('triangleDown'), // 向下三角形
+  diamond('diamond');   // 菱形
+
+  final String value;
+  const IndicatorShape(this.value);
 }
 </code></pre>
 <h4 id="tradingviewinterval-">TradingViewInterval 时间间隔类</h4>
